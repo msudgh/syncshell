@@ -6,7 +6,7 @@ __license__ = "MIT"
 __version__ = "0.1.0"
 
 from fire import Fire
-from .bootstrap import Syncshell
+from .syncshell import Syncshell
 
 if __name__ == "__main__":
     f = Fire(Syncshell)
