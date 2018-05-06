@@ -6,11 +6,8 @@ __license__ = "MIT"
 __version__ = "0.1.0"
 
 from fire import Fire
-from .config import Config
 from .syncshell import Syncshell
 
 
 if __name__ == "__main__":
-    config = Config()
-
-    f = Fire(Syncshell(config.parser))
+    f = Fire(Syncshell())
