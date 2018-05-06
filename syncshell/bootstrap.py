@@ -16,4 +16,4 @@ logger = logging.getLogger(__name__)
 
 class Syncshell(object):
     def auth(self):
-        logger.info('hi')
+        pass
