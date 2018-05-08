@@ -40,7 +40,7 @@ class Config(object):
         ''' Read and parse config file and config object '''
         # Copy template config file to home directory
         if os.path.exists(constants.CONFIG_PATH) is False:
-            copy(constants.CONFIG_PATH_TEMPLATE ,constants.CONFIG_PATH)
+            copy(constants.CONFIG_PATH_TEMPLATE, constants.CONFIG_PATH)
 
         try:
             self.parser.read(self.path)
@@ -65,5 +65,3 @@ class Config(object):
         except:
             logger.error('You\'re token key isn\'t authorized')
             sys.exit(0)
-
-
