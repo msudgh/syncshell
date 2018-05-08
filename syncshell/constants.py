@@ -22,3 +22,11 @@ WHITE = '\033[97m'
 # String Attr
 NORMAL = '\033[0m'
 BOLD = '\033[1m'
+
+# History
+# TODO: find safe way to find out the shell name
+SHELL = os.environ.get('SHELL')
+HISTORY_PATH = {
+    'bash': '{}/.bash_history'.format(Path.home()),
+    'zsh': '{}/.zsh_history'.format(Path.home()),
+}

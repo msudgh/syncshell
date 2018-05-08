@@ -45,6 +45,17 @@ class Config(object):
         try:
             self.parser.read(self.path)
             self.gist = GistAPI(self.parser['Auth']['token'])
+
+            # Set Shell and write new config
+            if (not self.parser['Shell']['name'] or
+                    not self.parser['Shell']['path']):
+                # Extract shell name
+                shell = constants.SHELL.replace('/usr/bin/', '')
+
+                self.parser['Shell']['name'] = shell
+                self.parser['Shell']['path'] = constants.HISTORY_PATH[shell]
+
+                self.write()
         except:
             logger.error('Unable to read config file.')
             sys.exit(0)
