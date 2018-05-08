@@ -40,5 +40,13 @@ class Syncshell(object):
 
             # Validate token key
             config.check_authorization()
-        except KeyboardInterrupt as E:
+        except KeyboardInterrupt as e:
             sys.exit(0)
+
+    def upload(self, history_path):
+        ''' Upload current history '''
+        
+        # Validate token key
+        config.check_authorization()
+
+        # config.gist.create('test')
