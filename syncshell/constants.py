@@ -27,6 +27,6 @@ BOLD = '\033[1m'
 # TODO: find safe way to find out the shell name
 SHELL = os.environ.get('SHELL')
 HISTORY_PATH = {
-    'bash': '{}/.bash_history'.format(Path.home()),
-    'zsh': '{}/.zsh_history'.format(Path.home()),
+    'bash': '.bash_history',
+    'zsh': '.zsh_history',
 }
