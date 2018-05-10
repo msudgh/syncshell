@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 # Configuration
 config = Config()
+config.read()
 
 
 def spinner_callback(spinner, message, status):

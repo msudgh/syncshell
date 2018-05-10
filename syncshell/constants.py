@@ -15,8 +15,9 @@ LOG = {
 
 # Paths
 APP_ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))  # noqa
-CONFIG_PATH_TEMPLATE = '{}/.syncshell.ini'.format(APP_ROOT_DIR)
-CONFIG_PATH = '{}/.syncshell.ini'.format(Path.home())
+CONFIG_FILENAME = '.syncshell.ini'
+CONFIG_PATH_TEMPLATE = '{}/{}'.format(APP_ROOT_DIR, CONFIG_FILENAME)
+CONFIG_PATH = '{}/{}'.format(Path.home(), CONFIG_FILENAME)
 
 # String Colors
 DEFAULT = '\033[39m'
