@@ -12,7 +12,7 @@ from shutil import copy
 import time
 from configparser import ConfigParser
 from . import constants
-from gist import GistAPI
+from github import Github
 
 # Setup logger
 logging.basicConfig(level=constants.LOG['level'],
@@ -44,7 +44,7 @@ class Config(object):
 
         try:
             self.parser.read(self.path)
-            self.gist = GistAPI(self.parser['Auth']['token'])
+            self.gist = Github(self.parser['Auth']['token'])
 
             # Set Shell and write new config
             if (not self.parser['Shell']['name'] or
@@ -70,9 +70,19 @@ class Config(object):
             logger.error('Unable to set config file.')
             sys.exit(0)
 
-    def check_authorization(self):
+    def check_authorization(self, spinner, callback):
         try:
-            self.gist.list()
+            # Check username exist
+            self.gist.get_user().login
+
+            message = 'Your Github token key authorized and confirmed.'
+            if callback: callback(spinner, message, 'succeed')
+
+            return True
         except:
-            logger.error('You\'re token key isn\'t authorized')
+            message = 'You\'re token key isn\'t authorized'
+
+            if callback: callback(spinner, message, 'fail')
+            else: logger.error(message)
+
             sys.exit(0)

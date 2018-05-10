@@ -13,7 +13,8 @@ idna==2.6
 log-symbols==0.0.11
 psutil==5.4.5
 pycodestyle==2.4.0
-python-gist==0.6.1
+PyGithub==1.39
+PyJWT==1.6.1
 python-gnupg==0.4.2
 requests==2.18.4
 simplejson==3.14.0
