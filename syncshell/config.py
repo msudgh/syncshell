@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# config.py: contain config class"""
+# config.py: contain config class
 __author__ = "Masoud Ghorbani <msud.ghorbani@gmail.com>"
 __license__ = "MIT"
 __version__ = "0.1.0"

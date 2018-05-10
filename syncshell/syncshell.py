@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# syncshell.py: contain syncshell class of app"""
+# syncshell.py: contain syncshell class of app
 __author__ = "Masoud Ghorbani <msud.ghorbani@gmail.com>"
 __license__ = "MIT"
 __version__ = "0.1.0"

@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# constants.py: contain syncshell's consts
 import os
 from pathlib import Path
 

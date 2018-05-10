@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# syncshell.py.__main__: execute main function directly"""
+# syncshell.py.__main__: execute main function directly
 __author__ = "Masoud Ghorbani <msud.ghorbani@gmail.com>"
 __license__ = "MIT"
 __version__ = "0.1.0"
