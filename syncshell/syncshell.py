@@ -129,5 +129,17 @@ class Syncshell(object):
         try:
             token = token or str(input('Enter your Github token key: '))
             gist_id = gist_id or str(input('Enter your Gist ID: '))
+
+            spinner = Halo(text='Downloading ...', spinner='dots')
+            spinner.start()
+
+            # Redefine Github instance with new token
+            config.gist = Github(token)
+
+            # Validate token key
+            config.check_authorization(spinner, spinner_callback)
+
+            # Download Gist object
+            gist = config.gist.get_gist(gist_id)
         except KeyboardInterrupt as e:
             sys.exit(0)
