@@ -135,7 +135,12 @@ class Syncshell(object):
             sys.exit(1)
 
     def download(self, token=config.parser['Auth']['token'], gist_id=config.parser['Auth']['gist_id'], out=None):
-        ''' Retrive token and gist id to download gist '''
+        ''' Retrive token and gist id to download gist 
+        
+        Here after authorization and downloading gist by `awk` command we'll
+        try to order commands to unix timestamps and sort(uniq) them by `sort`
+        command.
+        '''
         try:
             token = token or str(input('Enter your Github token key: '))
             gist_id = gist_id or str(input('Enter your Gist ID: '))
@@ -193,6 +198,8 @@ class Syncshell(object):
                 file.write(sort_proc.stdout.decode())
 
             spinner_callback(spinner, 'Gist downloaded and stored.', 'succeed')
+
+            return True
 
         except KeyboardInterrupt as e:
             sys.exit(0)
