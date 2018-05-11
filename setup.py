@@ -30,6 +30,6 @@ setup(
     maintainer='Masoud Ghorbani',
     maintainer_email='msud.ghorbani@gmail.com',
     url='https://github.com/msudgh/syncshell',
-    install_requires=['pygithub', 'halo'],
+    install_requires=['pygithub', 'halo', 'fire'],
     keywords=['sync', 'shell', 'syncshell', 'history', 'bash', 'zsh', 'linux'],
 )
