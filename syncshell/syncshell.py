@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 # syncshell.py: contain syncshell class of app
 __author__ = "Masoud Ghorbani <msud.ghorbani@gmail.com>"
-__license__ = "MIT"
-__version__ = "0.1.0"
 
 import sys
 import os
