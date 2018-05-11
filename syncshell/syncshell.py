@@ -11,6 +11,7 @@ import logging
 import textwrap
 from . import constants
 import time
+from configparser import ConfigParser
 from .config import Config
 from github import Github, InputFileContent
 from pathlib import Path
@@ -45,7 +46,8 @@ class Syncshell(object):
             print(textwrap.fill('If you don\'t have Github token key, Please, first go to {}{}https://github.com/settings/tokens{} address create a personal access token with gist scope.'.format(constants.WHITE, constants.BOLD, constants.NORMAL), width=80))  # noqa
 
             # Promte token key
-            config.parser['Auth']['token'] = str(input('Github Token Key: '))
+            config.parser['Auth']['token'] = str(
+                input('Enter your Github token key: '))
 
             spinner = Halo(text='Authentication ...', spinner='dots')
             spinner.start()
@@ -59,7 +61,7 @@ class Syncshell(object):
         except KeyboardInterrupt as e:
             sys.exit(0)
 
-    def upload(self, history_path=None, **args):
+    def upload(self, history_path=None):
         ''' Upload current history '''
         spinner = Halo(text='Uploading ...', spinner='dots')
         spinner.start()
@@ -120,4 +122,12 @@ class Syncshell(object):
             sys.exit(0)
         except KeyError as e:
             spinner_callback(spinner, 'Request\'s data is not valid', 'fail')
+            sys.exit(0)
+
+    def download(self, token=config.parser['Auth']['token'], gist_id=config.parser['Auth']['gist_id'], out=None):
+        ''' Retrive token and gist id to download gist '''
+        try:
+            token = token or str(input('Enter your Github token key: '))
+            gist_id = gist_id or str(input('Enter your Gist ID: '))
+        except KeyboardInterrupt as e:
             sys.exit(0)
