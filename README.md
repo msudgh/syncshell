@@ -50,7 +50,7 @@ Usage:       syncshell
 ## How it Works
 The actual idea of SyncShell is synchronization of your devices shell history, Almost, this ability will be useful when you want to sync your office and home machines. SyncShell is just built on Github `Gist` feature such that this CLI tool represents three methods to communicate with the tool.
 
-According to Github API, you can create a token key by set `gist` scope to accessing to your gists. gists have two **`public`**, **`secret`** type that on executing `syncshell upload` command will use secret type to store your history file and keep them secret on Github Gist.
+According to Github API, you can generate a token key with `gist` scope to accessing to your gists. Gists have two **`public`**, **`secret`** type which syncshell while executing `syncshell upload` command will use secret type to store your history file and keep them secret on Github Gist.
 
 On the others machine, by executing `syncshell download` after entering your token key and created Gist ID you can download the gist and sync your shell's history.
 
@@ -94,7 +94,7 @@ $ python install -r requirements.txt
 ```
 
 #### Tests
-Before submiting your PR by running the below command to be sure about passing test cases.
+Before submiting your PR, Execute the below command to be sure about passing test cases.
 ```bash
 $ pytest -c pytest.ini -s
 ```
