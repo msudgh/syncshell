@@ -6,7 +6,7 @@ import sys
 from setuptools import setup
 
 try:
-    from __version__ import __version__
+    from version import __version__
 except RuntimeError as e:
     raise RuntimeError('Unable to find version string.')
     sys.exit(1)
