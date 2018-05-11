@@ -141,5 +141,10 @@ class Syncshell(object):
 
             # Download Gist object
             gist = config.gist.get_gist(gist_id)
+
+            if len(gist.files) != 2:
+                spinner_callback(
+                    spinner, 'Gist contents are corrupted, Please be sure about the uploaded content.', 'fail')
+                sys.exit(1)
         except KeyboardInterrupt as e:
             sys.exit(0)
