@@ -146,5 +146,22 @@ class Syncshell(object):
                 spinner_callback(
                     spinner, 'Gist contents are corrupted, Please be sure about the uploaded content.', 'fail')
                 sys.exit(1)
+
+            config_file = gist.files[constants.CONFIG_FILENAME]
+
+            # Read configuration
+            temp_config = ConfigParser()
+            temp_config.read_string(config_file.content)
+
+            # Check shell names
+            if (temp_config['Shell']['name'] != config.parser['Shell']['name']):
+                spinner_callback(
+                    spinner, 'Shells arn\'t match, At this momment syncshell is unable to convert history of different shells', 'fail')
+                sys.exit(1)
+
+            # Write configuration
+            config.parser['Auth']['token'] = token
+            config.parser['Auth']['gist_id'] = gist_id
+            config.write()
         except KeyboardInterrupt as e:
             sys.exit(0)
