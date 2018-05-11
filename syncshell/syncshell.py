@@ -12,8 +12,9 @@ import textwrap
 from . import constants
 import time
 from configparser import ConfigParser
+from subprocess import run, PIPE
 from .config import Config
-from github import Github, InputFileContent
+from github import Github, InputFileContent, UnknownObjectException
 from pathlib import Path
 from halo import Halo
 
@@ -31,8 +32,29 @@ config.read()
 def spinner_callback(spinner, message, status):
     if status == 'fail':
         spinner.fail(message)
+        spinner.stop()
     elif status == 'succeed':
         spinner.succeed(message)
+
+
+def read_files():
+    ''' Read history and setting file '''
+
+    history_path = '{}/{}'.format(Path.home(), config.parser['Shell']['path'])
+    files = {}
+    with open(history_path, errors='ignore', mode='r') as history_file:
+        files[os.path.basename(history_file.name)] = InputFileContent(
+            history_file.read())
+
+    with open(constants.CONFIG_PATH, mode='r') as config_file:
+        # Remove token key on uplaod
+        lines = config_file.readlines()
+        lines.pop(1)
+
+        files[os.path.basename(config_file.name)] = InputFileContent(
+            ''.join(map(str, lines)))
+
+    return files
 
 
 class Syncshell(object):
@@ -69,60 +91,48 @@ class Syncshell(object):
         # Validate token key
         config.check_authorization(spinner, spinner_callback)
 
-        if not history_path:
-            history_path = '{}/{}'.format(Path.home(),
-                                          config.parser['Shell']['path'])
-
-        # Read history file from default path of shell or history_path
         try:
-            gist_meta = {
-                'description': 'syncshell Gist',
-                'files': {},
-                'public': False
-            }
-
-            with open(history_path, errors='ignore', mode='r') as history_file:
-                gist_meta['files'] = {
-                    os.path.basename(history_file.name): InputFileContent(history_file.read()),
-                }
-                history_file.close()
-
-            gist = config.gist.get_user().create_gist(False,
-                                                      gist_meta['files'],
-                                                      gist_meta['description'])
-
-            # Set upload date
-            config.parser['Upload']['last_date'] = str(int(time.time()))
-
-            # Set Gist id
             if config.parser['Auth']['gist_id']:
+                gist = config.gist.get_gist(config.parser['Auth']['gist_id'])
+
+                # Set upload date
+                config.parser['Upload']['last_date'] = str(int(time.time()))
+                config.write()
+
+                gist.edit(files=read_files())
+
                 spinner_callback(
                     spinner, 'Gist ID ({}) updated.'.format(gist.id), 'succeed')
             else:
+                description = 'syncshell Gist'
+                gist = config.gist.get_user().create_gist(False,
+                                                          read_files(),
+                                                          description)
+
+                # Set upload date
+                config.parser['Upload']['last_date'] = str(int(time.time()))
+                config.parser['Auth']['gist_id'] = gist.id
+                config.write()
+
+                gist.edit(files=read_files())
                 spinner_callback(
                     spinner, 'New Gist ID ({}) created.'.format(gist.id), 'succeed')
-
-            config.parser['Auth']['gist_id'] = gist.id
-            config.write()
-
-            with open(constants.CONFIG_PATH, mode='r') as config_file:
-                # Remove token key on uplaod
-                lines = config_file.readlines()
-                lines.pop(1)
-
-                gist_meta['files'] = {
-                    os.path.basename(config_file.name): InputFileContent(''.join(map(str, lines)))
-                }
-                config_file.close()
-
-            gist.edit(files=gist_meta['files'])
-
         except FileNotFoundError as e:
             spinner_callback(spinner, 'Couldn\'t find history file.', 'fail')
-            sys.exit(0)
+            sys.exit(1)
         except KeyError as e:
             spinner_callback(spinner, 'Request\'s data is not valid', 'fail')
-            sys.exit(0)
+            sys.exit(1)
+        except UnknownObjectException as e:
+            if e.status == 404:
+                config.parser['Auth']['gist_id'] = ''
+                config.write()
+
+                logger.warn('To create new gist run command again.')
+
+            spinner_callback(
+                spinner, '{} - {}'.format(e.status, e.data['message']), 'fail')
+            sys.exit(1)
 
     def download(self, token=config.parser['Auth']['token'], gist_id=config.parser['Auth']['gist_id'], out=None):
         ''' Retrive token and gist id to download gist '''
@@ -166,13 +176,26 @@ class Syncshell(object):
             config.write()
 
             # Save history file
-            out = out or '{}/{}'.format(Path.home(), config.parser['Shell']['path'])
+            out = out or '{}/{}'.format(Path.home(),
+                                        config.parser['Shell']['path'])
             history_file = gist.files[constants.HISTORY_PATH[config.parser['Shell']['name']]]
 
-            with open(out, 'a') as file:
-                file.write(history_file.content)
-                file.close()
-                spinner_callback(spinner, 'Gist downloaded.', 'succeed')
+            with open(out, 'r+', encoding="utf-8", errors='ignore') as system_history:
+                content = system_history.read()
+
+            history = history_file.content + content
+
+            awk_proc = run(['awk', '"/:[0-9]/ { if(s) { print s } s=$0 } !/:[0-9]/ { s=s"\n"$0 } END { print s }"'], stdout=PIPE,  input=bytes(history, encoding='utf8'))
+
+            sort_proc = run(['sort', '-u'], stdout=PIPE, input=awk_proc.stdout)
+
+            with open(out, 'w') as file:
+                file.write(sort_proc.stdout.decode())
+
+            spinner_callback(spinner, 'Gist downloaded and stored.', 'succeed')
 
         except KeyboardInterrupt as e:
             sys.exit(0)
+        except FileNotFoundError as e:
+            spinner_callback(spinner, 'Couldn\'t find history file.', 'fail')
+            sys.exit(1)
