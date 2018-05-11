@@ -91,10 +91,10 @@ class Syncshell(object):
                                                       gist_meta['files'],
                                                       gist_meta['description'])
 
-            # # Set upload date
+            # Set upload date
             config.parser['Upload']['last_date'] = str(int(time.time()))
 
-            # # Set Gist id
+            # Set Gist id
             if config.parser['Auth']['gist_id']:
                 spinner_callback(
                     spinner, 'Gist ID ({}) updated.'.format(gist.id), 'succeed')
@@ -142,6 +142,7 @@ class Syncshell(object):
             # Download Gist object
             gist = config.gist.get_gist(gist_id)
 
+            # TODO: use checksum instead checking length of files
             if len(gist.files) != 2:
                 spinner_callback(
                     spinner, 'Gist contents are corrupted, Please be sure about the uploaded content.', 'fail')
@@ -163,5 +164,15 @@ class Syncshell(object):
             config.parser['Auth']['token'] = token
             config.parser['Auth']['gist_id'] = gist_id
             config.write()
+
+            # Save history file
+            out = out or '{}/{}'.format(Path.home(), config.parser['Shell']['path'])
+            history_file = gist.files[constants.HISTORY_PATH[config.parser['Shell']['name']]]
+
+            with open(out, 'a') as file:
+                file.write(history_file.content)
+                file.close()
+                spinner_callback(spinner, 'Gist downloaded.', 'succeed')
+
         except KeyboardInterrupt as e:
             sys.exit(0)
