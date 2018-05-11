@@ -180,7 +180,7 @@ class Syncshell(object):
                                         config.parser['Shell']['path'])
             history_file = gist.files[constants.HISTORY_PATH[config.parser['Shell']['name']]]
 
-            with open(out, 'r+', encoding="utf-8", errors='ignore') as system_history:
+            with open(out, 'r', encoding="utf-8", errors='ignore') as system_history:
                 content = system_history.read()
 
             history = history_file.content + content
