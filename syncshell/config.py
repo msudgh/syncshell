@@ -50,7 +50,7 @@ class Config(object):
                     not self.parser['Shell']['path']):
                 # Extract shell name
                 regex = r"([^/]*$)"
-                matches = re.search(regex, test_str)
+                matches = re.search(regex, constants.SHELL)
                 shell = matches.group() or 'zsh'
 
                 self.parser['Shell']['name'] = shell
