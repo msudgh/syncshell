@@ -1,0 +1,3 @@
+include version.py
+include .syncshell.ini
+include README.md
