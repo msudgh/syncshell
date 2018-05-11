@@ -40,27 +40,30 @@ class Config(object):
 
     def read(self):
         ''' Read and parse config file and config object '''
-        try:
-            self.parser.read(self.path)
-            self.gist = Github(self.parser['Auth']['token'])
 
-            # Set Shell and write new config
-            if (not self.parser['Shell']['name'] or
-                    not self.parser['Shell']['path']):
-                # Extract shell name
-                shell = constants.SHELL.replace('/usr/bin/', '')
+        logger.info(constants.SHELL)
 
-                self.parser['Shell']['name'] = shell
-                self.parser['Shell']['path'] = constants.HISTORY_PATH[shell]
+        # try:
+        self.parser.read(self.path)
+        self.gist = Github(self.parser['Auth']['token'])
 
-                self.write()
+        # Set Shell and write new config
+        if (not self.parser['Shell']['name'] or
+                not self.parser['Shell']['path']):
+            # Extract shell name
+            shell = constants.SHELL.replace('/usr/bin/', '')
 
-            return True
-        except:
-            logger.error('Unable to read config file.')
+            self.parser['Shell']['name'] = shell
+            self.parser['Shell']['path'] = constants.HISTORY_PATH[shell]
 
-            return False
-            sys.exit(0)
+            self.write()
+
+        return True
+        # except:
+        #     logger.error('Unable to read config file.')
+
+        #     return False
+        #     sys.exit(0)
 
     def write(self, path=None):
         ''' Set and write new config '''
