@@ -25,11 +25,22 @@ setup(
     version=__version__,
     description='Keep your machine\'s shell history synchronize.',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Masoud Ghorbani',
     author_email='msud.ghorbani@gmail.com',
     maintainer='Masoud Ghorbani',
     maintainer_email='msud.ghorbani@gmail.com',
     url='https://github.com/msudgh/syncshell',
+    project_urls={
+        'Bug Reports': 'https://github.com/msudgh/syncshell/issues',
+        'Source': 'https://github.com/msudgh/syncshell',
+    },
     install_requires=['pygithub', 'halo', 'fire'],
-    keywords=['sync', 'shell', 'syncshell', 'history', 'bash', 'zsh', 'linux'],
+    keywords='sync shell syncshell history bash zsh linux'],
+    classifiers=[
+        'Development Status :: 1.0.1 - Stable',
+        'License :: MIT License',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+    ],
 )
