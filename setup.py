@@ -36,7 +36,7 @@ setup(
         'Source': 'https://github.com/msudgh/syncshell',
     },
     install_requires=['pygithub', 'halo', 'fire'],
-    keywords='sync shell syncshell history bash zsh linux'],
+    keywords='sync shell syncshell history bash zsh linux',
     classifiers=[
         'Development Status :: 1.0.1 - Stable',
         'License :: MIT License',
