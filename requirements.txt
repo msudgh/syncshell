@@ -10,7 +10,7 @@ fire==0.1.3
 futures==3.1.1
 halo==0.0.12
 idna==2.6
-Jinja2==2.9.5
+Jinja2==2.11.3
 log-symbols==0.0.11
 MarkupSafe==1.0
 more-itertools==4.1.0
