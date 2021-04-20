@@ -16,7 +16,7 @@ MarkupSafe==1.0
 more-itertools==4.1.0
 pluggy==0.6.0
 psutil==5.4.5
-py==1.5.3
+py==1.10.0
 pycodestyle==2.4.0
 PyGithub==1.39
 PyJWT==1.6.1
