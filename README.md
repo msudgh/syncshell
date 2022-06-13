@@ -48,7 +48,7 @@ Usage:       syncshell
 ```
 
 ## How it Works
-The actual idea of SyncShell is synchronization of your devices shell history, Almost, this ability will be useful when you want to sync your office and home machines. SyncShell is just built on Github `Gist` feature such that this CLI tool represents three methods to communicate with the tool.
+The actual idea of SyncShell is synchronization of your all device's shell history, it means you don't need to have concerns when you want to sync your office and home machine's shell history. Application integrated and built on top of Github Gist, and written in Python (CLI).
 
 According to Github API, you can generate a token key with `gist` scope to accessing to your gists. Gists have two **`public`**, **`secret`** type which syncshell while executing `syncshell upload` command will use secret type to store your history file and keep them secret on Github Gist.
 
