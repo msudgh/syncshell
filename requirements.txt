@@ -12,14 +12,14 @@ halo==0.0.12
 idna==2.6
 Jinja2==2.9.5
 log-symbols==0.0.11
-MarkupSafe==1.0
+MarkupSafe==2.1.1
 more-itertools==4.1.0
 pluggy==0.6.0
 psutil==5.4.5
 py==1.5.3
 pycodestyle==2.4.0
-PyGithub==1.39
-PyJWT==1.6.1
+PyGithub==1.55
+PyJWT==2.4.0
 pytest==3.5.1
 pytest-testdox==1.0.1
 requests==2.18.4
