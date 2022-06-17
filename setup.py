@@ -45,4 +45,5 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Natural Language :: English',
     ],
+    python_requires=">=3.5",
 )
