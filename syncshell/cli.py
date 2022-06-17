@@ -7,44 +7,37 @@ import sys
 import os
 import logging
 import textwrap
-from . import constants
+import constants
 import time
+import utils
 from configparser import ConfigParser
 from subprocess import run, PIPE
-from .config import Config
+from config import Config
 from github import Github, InputFileContent, UnknownObjectException
 from pathlib import Path
-from halo import Halo
 
 # Setup logger
 logging.basicConfig(level=constants.LOG['level'],
                     format=constants.LOG['format'])
 logger = logging.getLogger(__name__)
 
-
 # Configuration
 config = Config()
 config.read()
 
 
-def spinner_callback(spinner, message, status):
-    if status == 'fail':
-        spinner.fail(message)
-        spinner.stop()
-    elif status == 'succeed':
-        spinner.succeed(message)
+def prepare_payload():
+    ''' Prepare history and config file for upload '''
 
-
-def read_files():
-    ''' Read history and setting file '''
-
-    history_path = '{}/{}'.format(Path.home(), config.parser['Shell']['path'])
     files = {}
+    history_path = '{}/{}'.format(Path.home(), config.parser['Shell']['path'])
+    config_path = constants.CONFIG_PATH
+
     with open(history_path, errors='ignore', mode='r') as history_file:
         files[os.path.basename(history_file.name)] = InputFileContent(
             history_file.read())
 
-    with open(constants.CONFIG_PATH, mode='r') as config_file:
+    with open(config_path, mode='r') as config_file:
         # Remove token key on uplaod
         lines = config_file.readlines()
         lines.pop(1)
@@ -55,7 +48,7 @@ def read_files():
     return files
 
 
-class Syncshell(object):
+class Application(object):
     def __init__(self):
         pass
 
@@ -69,27 +62,25 @@ class Syncshell(object):
             config.parser['Auth']['token'] = str(
                 input('Enter your Github token key: '))
 
-            spinner = Halo(text='Authentication ...', spinner='dots')
-            spinner.start()
-
             # Set new token key
             config.gist = Github(config.parser['Auth']['token'])
 
-            # Validate token key and if it's valid write config object
-            if config.check_authorization(spinner, spinner_callback):
+            # Write config file if Github user alreaded authorized
+            if config.is_logged_in():
                 config.write()
         except KeyboardInterrupt as e:
             sys.exit(0)
 
     def upload(self, history_path=None):
         ''' Upload current history '''
-        spinner = Halo(text='Uploading ...', spinner='dots')
-        spinner.start()
+        spinner = utils.Spinner('Uploading ...')
 
-        # Validate token key
-        config.check_authorization(spinner, spinner_callback)
+        # Exit process if not logged in
+        if not config.is_logged_in():
+            sys.exit(1)
 
         try:
+            files = prepare_payload()
             if config.parser['Auth']['gist_id']:
                 gist = config.gist.get_gist(config.parser['Auth']['gist_id'])
 
@@ -97,29 +88,26 @@ class Syncshell(object):
                 config.parser['Upload']['last_date'] = str(int(time.time()))
                 config.write()
 
-                gist.edit(files=read_files())
+                gist.edit(files=files)
 
-                spinner_callback(
-                    spinner, 'Gist ID ({}) updated.'.format(gist.id), 'succeed')
+                spinner.succeed('Gist ID ({}) updated.'.format(gist.id))
             else:
-                description = 'syncshell Gist'
-                gist = config.gist.get_user().create_gist(False,
-                                                          read_files(),
-                                                          description)
+                description = 'SyncShell Gist'
+                user = config.gist.get_user()
+                gist = user.create_gist(False, files, description)
 
                 # Set upload date
                 config.parser['Upload']['last_date'] = str(int(time.time()))
                 config.parser['Auth']['gist_id'] = gist.id
                 config.write()
 
-                gist.edit(files=read_files())
-                spinner_callback(
-                    spinner, 'New Gist ID ({}) created.'.format(gist.id), 'succeed')
+                gist.edit(files=files)
+                spinner.succeed('New Gist ID ({}) created.'.format(gist.id))
         except FileNotFoundError as e:
-            spinner_callback(spinner, 'Couldn\'t find history file.', 'fail')
+            spinner.fail('Couldn\'t find history file.')
             sys.exit(1)
         except KeyError as e:
-            spinner_callback(spinner, 'Request\'s data is not valid', 'fail')
+            spinner.fail('Request\'s data is not valid')
             sys.exit(1)
         except UnknownObjectException as e:
             if e.status == 404:
@@ -127,14 +115,12 @@ class Syncshell(object):
                 config.write()
 
                 logger.warn('To create new gist run command again.')
-
-            spinner_callback(
-                spinner, '{} - {}'.format(e.status, e.data['message']), 'fail')
+                spinner.fail('{} - {}'.format(e.status, e.data['message']))
             sys.exit(1)
 
     def download(self, token=config.parser['Auth']['token'], gist_id=config.parser['Auth']['gist_id'], out=None):
         ''' Retrive token and gist id to download gist 
-        
+
         Here after authorization and downloading gist by `awk` command we'll
         try to order commands to unix timestamps and sort(uniq) them by `sort`
         command.
@@ -143,22 +129,22 @@ class Syncshell(object):
             token = token or str(input('Enter your Github token key: '))
             gist_id = gist_id or str(input('Enter your Gist ID: '))
 
-            spinner = Halo(text='Downloading ...', spinner='dots')
-            spinner.start()
+            spinner = utils.Spinner('Downloading ...')
 
             # Redefine Github instance with new token
             config.gist = Github(token)
 
-            # Validate token key
-            config.check_authorization(spinner, spinner_callback)
+            # Exit process if not logged in
+            if not config.is_logged_in():
+                sys.exit(1)
 
             # Download Gist object
             gist = config.gist.get_gist(gist_id)
 
             # TODO: use checksum instead checking length of files
             if len(gist.files) != 2:
-                spinner_callback(
-                    spinner, 'Gist contents are corrupted, Please be sure about the uploaded content.', 'fail')
+                spinner.fail(
+                    'Gist contents are corrupted, Please be sure about the uploaded content.')
                 sys.exit(1)
 
             config_file = gist.files[constants.CONFIG_FILENAME]
@@ -169,8 +155,8 @@ class Syncshell(object):
 
             # Check shell names
             if (temp_config['Shell']['name'] != config.parser['Shell']['name']):
-                spinner_callback(
-                    spinner, 'Shells arn\'t match, At this momment syncshell is unable to convert history of different shells', 'fail')
+                spinner.fail(
+                    'Shells arn\'t match, At this momment syncshell is unable to convert history of different shells')
                 sys.exit(1)
 
             # Write configuration
@@ -188,19 +174,20 @@ class Syncshell(object):
 
             history = history_file.content + content
 
-            awk_proc = run(['awk', '"/:[0-9]/ { if(s) { print s } s=$0 } !/:[0-9]/ { s=s"\n"$0 } END { print s }"'], stdout=PIPE,  input=bytes(history, encoding='utf8'))
+            awk_proc = run(['awk', '"/:[0-9]/ { if(s) { print s } s=$0 } !/:[0-9]/ { s=s"\n"$0 } END { print s }"'],
+                           stdout=PIPE,  input=bytes(history, encoding='utf8'))
 
             sort_proc = run(['sort', '-u'], stdout=PIPE, input=awk_proc.stdout)
 
             with open(out, 'w') as file:
                 file.write(sort_proc.stdout.decode())
 
-            spinner_callback(spinner, 'Gist downloaded and stored.', 'succeed')
+            spinner.succeed('Gist downloaded and stored.')
 
             return True
 
         except KeyboardInterrupt as e:
             sys.exit(0)
         except FileNotFoundError as e:
-            spinner_callback(spinner, 'Couldn\'t find history file.', 'fail')
+            spinner.fail('Couldn\'t find history file.')
             sys.exit(1)

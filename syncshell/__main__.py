@@ -4,10 +4,10 @@
 __author__ = "Masoud Ghorbani <msud.ghorbani@gmail.com>"
 
 from fire import Fire
-from .syncshell import Syncshell
+from cli import Application
 
 def main():
-    f = Fire(Syncshell())
+    Fire(Application)
 
 if __name__ == "__main__":
     main()

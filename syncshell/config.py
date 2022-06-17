@@ -10,8 +10,8 @@ from shutil import copy
 import time
 import re
 from configparser import ConfigParser
-from . import constants
 from github import Github
+import constants, utils
 
 # Setup logger
 logging.basicConfig(level=constants.LOG['level'],
@@ -81,19 +81,16 @@ class Config(object):
             return False
             sys.exit(1)
 
-    def check_authorization(self, spinner=False, callback=False):
+    # Check user exists
+    def is_logged_in(self):
+        spinner = utils.Spinner('Check authenticated ...')
+
         try:
-            # Check username exist
             self.gist.get_user().login
-
-            message = 'Your Github token key authorized and confirmed.'
-            if spinner and callback: callback(spinner, message, 'succeed')
-
+            success_text = 'Your Github token key authenticated and confirmed.'
+            spinner.succeed(success_text)
             return True
         except:
-            message = 'You\'re token key isn\'t authorized'
-
-            if spinner and callback: callback(spinner, message, 'fail')
-            else: logger.error(message)
-
-            sys.exit(1)
+            fail_text = 'Your Github token key is not valid. Authenticate first.'
+            spinner.fail(fail_text)
+            return False
