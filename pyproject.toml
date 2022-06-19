@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "syncshell"
 version = "1.0.3"
-description = "Keep your machine's shell history synchronize."
+description = "Keep your machine's shell history synchronized."
 
 license = "MIT"
 
@@ -27,3 +27,14 @@ PyGithub = "1.55"
 [tool.poetry.dev-dependencies]
 pytest = "7.1.2"
 pytest-testdox = "^3.0.1"
+pre-commit = "^2.19.0"
+
+[tool.black]
+py36 = true
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+    | dist
+)/
+'''

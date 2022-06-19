@@ -4,7 +4,7 @@
   <strong>Yet another tool for laziness</strong>
 </div>
 <div align="center">
-  Keep your machine's shell history synchronize
+  Keep your machine's shell history synchronized
 </div>
 <br/>
 <div align="center">
