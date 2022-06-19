@@ -5,7 +5,6 @@ import sys
 import os
 from pathlib import Path
 from shutil import copy
-import re
 from configparser import ConfigParser, Error as ConfigParserError
 from github import Github, GithubException
 from syncshell.utils import constants, spinner as Spinner
@@ -43,13 +42,8 @@ class SyncShellConfig:
 
             # Set Shell and write new config
             if not self.parser["Shell"]["name"] or not self.parser["Shell"]["path"]:
-                # Extract shell name
-                regex = r"([^/]*$)"
-                matches = re.search(regex, constants.SHELL)
-                shell = matches.group() or "zsh"
-
-                self.parser["Shell"]["name"] = shell
-                self.parser["Shell"]["path"] = constants.HISTORY_PATH[shell]
+                self.parser["Shell"]["name"] = constants.SHELL
+                self.parser["Shell"]["path"] = constants.HISTORY_PATH[constants.SHELL]
 
                 self.write()
 
@@ -57,6 +51,7 @@ class SyncShellConfig:
         except ConfigParserError:
             print("Unable to read config file.")
             sys.exit(1)
+            return False
 
     def write(self, path=None):
         """Set and write new config"""
