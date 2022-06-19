@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# setup.py: setuptools control
 
 import sys
 from setuptools import setup
@@ -42,5 +41,5 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Natural Language :: English",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.7.13",
 )
