@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# config_test.py: unit tests of config class
 
 import pytest
-import syncshell.constants as constants
-from syncshell.config import Config
+from syncshell.utils import constants
+from syncshell.config import SyncShellConfig
 
 
 @pytest.mark.config
 def test_initialization():
     """Check the configuration path"""
-    config = Config()
+    config = SyncShellConfig()
 
     assert config.path == constants.CONFIG_PATH
 
@@ -18,7 +17,7 @@ def test_initialization():
 @pytest.mark.config
 def test_reading_configuration():
     """Check reading configuration from path is successful"""
-    config = Config()
+    config = SyncShellConfig()
 
     assert config.read()
 
@@ -29,7 +28,7 @@ def test_writing_configuration():
     file is successful.
 
     """
-    config = Config(constants.CONFIG_PATH_TEMPLATE)
+    config = SyncShellConfig(constants.CONFIG_PATH_TEMPLATE)
     config.read()
     temp_file_path = "/tmp/{}".format(constants.CONFIG_FILENAME)
 

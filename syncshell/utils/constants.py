@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 import os
 
 # Metainfo
 APP_NAME = 'syncshell'
-
-# Log
-LOG = {
-    'level': 'INFO',
-    'format': '↳ %(levelname)s - %(message)s'
-}
 
 # Paths
 APP_ROOT_DIR = os.path.abspath(

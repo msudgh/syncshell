@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import logging
 import sys
 import os
 from pathlib import Path
@@ -10,10 +9,6 @@ import re
 from configparser import ConfigParser, Error as ConfigParserError
 from github import Github, GithubException
 from syncshell.utils import constants, spinner as Spinner
-
-# Setup logger
-logging.basicConfig(level=constants.LOG["level"], format=constants.LOG["format"])
-logger = logging.getLogger(__name__)
 
 
 class SyncShellConfig:
@@ -60,7 +55,7 @@ class SyncShellConfig:
 
             return True
         except ConfigParserError:
-            logger.error("Unable to read config file.")
+            print("Unable to read config file.")
             sys.exit(1)
 
     def write(self, path=None):
@@ -74,7 +69,7 @@ class SyncShellConfig:
 
             return True
         except IOError:
-            logger.error("Unable to set config file.")
+            print("Unable to set config file.")
             sys.exit(1)
 
     def is_logged_in(self):
