@@ -42,6 +42,7 @@ class SyncShellConfig:
 
             # Set Shell and write new config
             if not self.parser["Shell"]["name"] or not self.parser["Shell"]["path"]:
+                print("Shell", constants.SHELL)
                 self.parser["Shell"]["name"] = constants.SHELL
                 self.parser["Shell"]["path"] = constants.HISTORY_PATH[constants.SHELL]
 
