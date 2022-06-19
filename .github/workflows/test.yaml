@@ -31,7 +31,8 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install
-          # python -m pip install flake8 pytest pytest-testdox
+          # All python related commands should be executed by poetry run.
+          # Checkout the following examples.
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names

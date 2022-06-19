@@ -71,6 +71,7 @@ class SyncShellConfig:
         except IOError:
             print("Unable to set config file.")
             sys.exit(1)
+            return False
 
     def is_logged_in(self):
         """Check user exists in config file"""

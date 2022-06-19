@@ -6,9 +6,10 @@ from halo import Halo
 
 class NewTask:
     """Spinner New Task class wrapper around Halo"""
+
     __spinner = None
 
-    def __init__(self, text, spinner='dots'):
+    def __init__(self, text, spinner="dots"):
         self.__spinner = Halo(text=text, spinner=spinner)
         self.__spinner.start()
 
