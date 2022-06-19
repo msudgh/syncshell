@@ -3,7 +3,6 @@
 
 import sys
 import os
-import logging
 import textwrap
 import time
 from configparser import ConfigParser
@@ -11,10 +10,6 @@ from subprocess import run, PIPE
 from github import Github, InputFileContent, UnknownObjectException
 from syncshell.utils import constants, spinner as Spinner
 from syncshell.config import SyncShellConfig
-
-# Setup logger
-logging.basicConfig(level=constants.LOG["level"], format=constants.LOG["format"])
-logger = logging.getLogger(__name__)
 
 # Configuration
 config = SyncShellConfig()
@@ -147,9 +142,7 @@ class Application:
 
             # Read new configuration
             temp_config = ConfigParser()
-            temp_config.read_string(
-                gist.files[constants.CONFIG_FILENAME].content
-            )
+            temp_config.read_string(gist.files[constants.CONFIG_FILENAME].content)
 
             # Check shell names
             if temp_config["Shell"]["name"] != config.parser["Shell"]["name"]:
