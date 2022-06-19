@@ -8,9 +8,11 @@
 </div>
 <br/>
 <div align="center">
+![example branch parameter]()
+
   <!-- Build Status -->
-  <a href="https://travis-ci.org/msudgh/syncshell">
-    <img src="https://img.shields.io/travis/msudgh/syncshell/master.svg?style=flat"
+  <a href="https://github.com/msudgh/syncshell/actions/workflows/test.yaml">
+    <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=master"
       alt="Build Status" />
   </a>
   <!-- License -->
