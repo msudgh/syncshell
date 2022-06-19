@@ -7,7 +7,7 @@ from setuptools import setup
 
 try:
     from version import __version__
-except RuntimeError as e:
+except RuntimeError:
     raise RuntimeError('Unable to find version string.')
     sys.exit(1)
 
@@ -36,7 +36,7 @@ setup(
         'Source': 'https://github.com/msudgh/syncshell',
     },
     install_requires=['pygithub', 'halo', 'fire'],
-    keywords='sync shell syncshell history bash zsh linux',
+    keywords='sync shell history bash zsh',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
