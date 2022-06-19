@@ -8,8 +8,6 @@
 </div>
 <br/>
 <div align="center">
-![example branch parameter]()
-
   <!-- Build Status -->
   <a href="https://github.com/msudgh/syncshell/actions/workflows/test.yaml">
     <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=master"
