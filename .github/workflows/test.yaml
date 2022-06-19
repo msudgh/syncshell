@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install
-          python -m pip install flake8
+          python -m pip install flake8 pytest
       - name: Lint with flake8
         run: |
           pip show -f flake8
