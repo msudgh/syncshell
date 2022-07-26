@@ -20,10 +20,9 @@ def prepare_payload():
     """Prepare history and config file for upload"""
 
     files = {}
-    history_path = config.get_history_path()
     config_path = constants.CONFIG_PATH
 
-    with open(history_path, errors="ignore", mode="r") as history_file:
+    with open(constants.SHELL_HISTORY_PATH, mode="r") as history_file:
         files[os.path.basename(history_file.name)] = InputFileContent(
             history_file.read()
         )
@@ -61,7 +60,7 @@ class Application:
             config.gist = Github(config.parser["Auth"]["token"])
 
             # Write config file if Github user alreaded authorized
-            if config.is_logged_in():
+            if config.is_logged_in(False):
                 config.write()
         except KeyboardInterrupt:
             sys.exit(0)
@@ -75,7 +74,6 @@ class Application:
             sys.exit(1)
 
         try:
-            files = prepare_payload()
             if config.parser["Auth"]["gist_id"]:
                 gist = config.gist.get_gist(config.parser["Auth"]["gist_id"])
 
@@ -83,19 +81,24 @@ class Application:
                 config.parser["Upload"]["last_date"] = str(int(time.time()))
                 config.write()
 
+                files = prepare_payload()
                 gist.edit(files=files)
 
                 spinner.succeed(f"Gist ID ({gist.id}) updated.")
             else:
                 description = "SyncShell Gist"
+
                 user = config.gist.get_user()
+                files = prepare_payload()
                 gist = user.create_gist(False, files, description)
 
                 # Set upload date
                 config.parser["Upload"]["last_date"] = str(int(time.time()))
                 config.parser["Auth"]["gist_id"] = gist.id
+
                 config.write()
 
+                files = prepare_payload()
                 gist.edit(files=files)
                 spinner.succeed(f"New Gist ID ({gist.id}) created.")
         except FileNotFoundError:
@@ -106,21 +109,20 @@ class Application:
             sys.exit(1)
         except UnknownObjectException as error:
             if error.status == 404:
-                config.parser["Auth"]["gist_id"] = ""
-                config.write()
-
                 spinner.fail(
                     "Gist ID not found. If you manually deleted Gist "
-                    f"({gist.id}) in past then try to execute upload command "
+                    "in past then try to execute upload command "
                     "again for new upload and sync."
                 )
+
+                config.parser["Auth"]["gist_id"] = ""
+                config.write()
             sys.exit(1)
 
     def download(self):
         """Download Gist and save it to history file"""
 
         try:
-            history_path = config.get_history_path()
             token = str(input("Enter your Github token key: "))
             gist_id = str(input("Enter your Gist ID: "))
 
@@ -154,50 +156,47 @@ class Application:
             config.parser["Auth"]["gist_id"] = gist_id
             config.write()
 
-            with open(
-                history_path, "r+", encoding="utf-8", errors="ignore"
-            ) as history_file:
+            with open(constants.SHELL_HISTORY_PATH, "r+") as history_file:
                 history = history_file.read()
 
-            new_changes = gist.files[
-                constants.HISTORY_PATH[config.parser["Shell"]["name"]]
-            ]
+                new_changes = gist.files[
+                    constants.SUPPORTED_SHELLS[config.parser["Shell"]["name"]]
+                ]
 
-            synced_changes = new_changes.content + history
+                synced_changes = new_changes.content + history
 
-            awk_proc = run(
-                [
-                    "awk",
-                    '"/:[0-9]/ { if(s) { print s } s=$0 } !/:[0-9]/ { s=s"\n"$0 } END { print s }"',
-                ],
-                stdout=PIPE,
-                input=bytes(synced_changes, encoding="utf8"),
-                check=True,
-            )
+                awk_proc = run(
+                    [
+                        "awk",
+                        '"/:[0-9]/ { if(s) { print s } s=$0 } !/:[0-9]/ { s=s"\n"$0 } END { print s }"',
+                    ],
+                    stdout=PIPE,
+                    input=bytes(synced_changes, encoding="utf8"),
+                    check=True,
+                )
 
-            # Remove duplicate lines
-            awk_duplicates_proc = run(
-                [
-                    "awk",
-                    '"!visited[$0]++ { print $0 }"',
-                ],
-                stdout=PIPE,
-                input=bytes(awk_proc.stdout.decode("utf-8"), encoding="utf8"),
-                check=True,
-            )
+                # Remove duplicate lines
+                awk_duplicates_proc = run(
+                    [
+                        "awk",
+                        '"!visited[$0]++ { print $0 }"',
+                    ],
+                    stdout=PIPE,
+                    input=bytes(awk_proc.stdout.decode("utf-8"), encoding="utf8"),
+                    check=True,
+                )
 
-            sort_proc = run(
-                ["sort", "-u"],
-                stdout=PIPE,
-                input=bytes(
-                    awk_duplicates_proc.stdout.decode("utf-8"), encoding="utf8"
-                ),
-                check=True,
-            )
+                sort_proc = run(
+                    ["sort", "-u"],
+                    stdout=PIPE,
+                    input=bytes(
+                        awk_duplicates_proc.stdout.decode("utf-8"), encoding="utf8"
+                    ),
+                    check=True,
+                )
 
-            history.write(sort_proc.stdout.decode("utf-8"))
-
-            spinner.succeed("Gist downloaded and stored.")
+                history_file.write(sort_proc.stdout.decode("utf-8"))
+                spinner.succeed("Gist downloaded and stored.")
         except KeyboardInterrupt:
             sys.exit(0)
         except FileNotFoundError:

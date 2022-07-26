@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+from pathlib import Path
 
 # Metainfo
 APP_NAME = "syncshell"
@@ -23,12 +24,12 @@ NORMAL = "\033[0m"
 BOLD = "\033[1m"
 
 # History
-SHELL = os.environ.get("SHELL")
-HISTORY_PATH = {
+SUPPORTED_SHELLS = {
     "bash": ".bash_history",
     "zsh": ".zsh_history",
 }
-
+SHELL = os.path.basename(os.environ.get("SHELL"))
+SHELL_HISTORY_PATH = Path.joinpath(Path.home(), SUPPORTED_SHELLS[SHELL])
 HELP_MESSAGE = (
     "If you don't have Github token key, "
     "Please, first go to "
