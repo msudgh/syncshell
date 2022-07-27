@@ -10,7 +10,7 @@
 <div align="center">
   <!-- Build Status -->
   <a href="https://github.com/msudgh/syncshell/actions/workflows/test.yaml">
-    <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=master"
+    <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=main"
       alt="Build Status" />
   </a>
   <!-- License -->
@@ -50,7 +50,8 @@ Usage:       syncshell
 ## How it Works
 The actual idea of SyncShell is synchronization of your all device's shell history, it means you don't need to have concerns when you want to sync your office and home machine's shell history. Application integrated and built on top of Github Gist, and written in Python (CLI).
 
-According to Github API, you can generate a token key with `gist` scope to accessing to your gists. Gists have two **`public`**, **`secret`** type which syncshell while executing `syncshell upload` command will use secret type to store your history file and keep them secret on Github Gist.
+According to Github API, you can generate a token key with `gist` scope to access to Gist. 
+Gists have two **`public`**, **`secret`** type which syncshell while executing `syncshell upload` command will upload your history file and store them on Github Gist securely (**private**).
 
 On the others machine, by executing `syncshell download` after entering your token key and created Gist ID you can download the gist and sync your shell's history.
 
@@ -106,4 +107,4 @@ $ poetry run pytest -c pytest.ini -s
 Done :wink:
 
 ## License
-The code is licensed under the MIT License. See the data's [LICENSE](https://github.com/msudgh/syncshell/blob/master/LICENSE) file for more information.
+The code is licensed under the MIT License. See the data's [LICENSE](https://github.com/msudgh/syncshell/blob/main/LICENSE) file for more information.
