@@ -10,7 +10,7 @@
 <div align="center">
   <!-- Build Status -->
   <a href="https://github.com/msudgh/syncshell/actions/workflows/test.yaml">
-    <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=master"
+    <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=main"
       alt="Build Status" />
   </a>
   <!-- License -->
@@ -106,4 +106,4 @@ $ poetry run pytest -c pytest.ini -s
 Done :wink:
 
 ## License
-The code is licensed under the MIT License. See the data's [LICENSE](https://github.com/msudgh/syncshell/blob/master/LICENSE) file for more information.
+The code is licensed under the MIT License. See the data's [LICENSE](https://github.com/msudgh/syncshell/blob/main/LICENSE) file for more information.
