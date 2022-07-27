@@ -28,8 +28,8 @@ SUPPORTED_SHELLS = {
     "bash": ".bash_history",
     "zsh": ".zsh_history",
 }
-SHELL = os.path.basename(os.environ.get("SHELL"))
-SHELL_HISTORY_PATH = Path.joinpath(Path.home(), SUPPORTED_SHELLS[SHELL])
+SHELL = os.path.basename(os.environ.get("SHELL", "bash"))
+SHELL_HISTORY_PATH = str(Path.joinpath(Path.home(), SUPPORTED_SHELLS[SHELL]))
 HELP_MESSAGE = (
     "If you don't have Github token key, "
     "Please, first go to "

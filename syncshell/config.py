@@ -41,9 +41,8 @@ class SyncShellConfig:
 
             # Set Shell and write new config
             if not self.parser["Shell"]["name"] or not self.parser["Shell"]["path"]:
-                print("Shell", constants.SHELL)
                 self.parser["Shell"]["name"] = constants.SHELL
-                self.parser["Shell"]["path"] = os.environ.get("SHELL")
+                self.parser["Shell"]["path"] = constants.SHELL_HISTORY_PATH
 
                 self.write()
 
@@ -72,15 +71,17 @@ class SyncShellConfig:
         """Check user exists in config file"""
 
         try:
-            if self.gist.get_user().login:
-                if not in_background:
-                    spinner = Spinner.NewTask("Check authenticated ...")
-                    success_text = "Your Github token key authenticated and confirmed."
-                    spinner.succeed(success_text)
-                return True
+            user = self.gist.get_user()
+            if not user.login:
+                return False
 
-            return False
+            if not in_background:
+                spinner = Spinner.NewTask("Check authenticated ...")
+                spinner.succeed("Your Github token key is authenticated.")
+
+            return True
         except GithubException:
             fail_text = "Your Github token key is not valid. Authenticate first."
             spinner.fail(fail_text)
+
             return False
