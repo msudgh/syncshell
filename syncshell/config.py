@@ -3,7 +3,6 @@
 
 import sys
 import os
-from pathlib import Path
 from shutil import copy
 from configparser import ConfigParser, Error as ConfigParserError
 from github import Github, GithubException
@@ -42,9 +41,8 @@ class SyncShellConfig:
 
             # Set Shell and write new config
             if not self.parser["Shell"]["name"] or not self.parser["Shell"]["path"]:
-                print("Shell", constants.SHELL)
                 self.parser["Shell"]["name"] = constants.SHELL
-                self.parser["Shell"]["path"] = constants.HISTORY_PATH[constants.SHELL]
+                self.parser["Shell"]["path"] = constants.SHELL_HISTORY_PATH
 
                 self.write()
 
@@ -69,22 +67,21 @@ class SyncShellConfig:
             sys.exit(1)
             return False
 
-    def is_logged_in(self):
+    def is_logged_in(self, in_background=True):
         """Check user exists in config file"""
-        spinner = Spinner.NewTask("Check authenticated ...")
 
         try:
-            if self.gist.get_user().login:
-                success_text = "Your Github token key authenticated and confirmed."
-                spinner.succeed(success_text)
-                return True
+            user = self.gist.get_user()
+            if not user.login:
+                return False
 
-            return False
+            if not in_background:
+                spinner = Spinner.NewTask("Check authenticated ...")
+                spinner.succeed("Your Github token key is authenticated.")
+
+            return True
         except GithubException:
             fail_text = "Your Github token key is not valid. Authenticate first."
             spinner.fail(fail_text)
-            return False
 
-    def get_history_path(self):
-        """Return path of shell history file"""
-        return Path.joinpath(Path.home(), self.parser["Shell"]["path"])
+            return False

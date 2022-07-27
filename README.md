@@ -78,25 +78,29 @@ $ syncshell download
 
 ## Todo
 - [ ] Write more test cases
-- [ ] Support `bash` and other shells
+- [x] Support `zsh`, `bash`
 
 ## Contributing
-So nice you wanna contribute to this repository. Thank you. You may contribute in several ways like:
+So nice you wanna contribute to this repository. Thank you. You may contribute in several ways consists of:
 
-  * Creating new features
-  * Fixing bugs
-  * Write test cases
+* Creating new features
+* Fixing bugs
 
 #### Installing dependencies
+[Poetry Installation](https://python-poetry.org/docs/#installation) is straightforward walkthough to setup a versatile package manager.
+
 By the following command install syncshell dependencies
 ```bash
-$ python install -r requirements.txt
+# Clone syncshell repository
+$ git clone git@github.com:msudgh/syncshell.git
+$ cd syncshell
+$ poetry install
 ```
 
 #### Tests
 Before submiting your PR, Execute the below command to be sure about passing test cases.
 ```bash
-$ pytest -c pytest.ini -s
+$ poetry run pytest -c pytest.ini -s
 ```
 
 Done :wink:
