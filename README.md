@@ -38,8 +38,9 @@ $ pip install syncshell # Maybe sudo need
 ```
 ```bash
 $ syncshell -- --help
-Type:        Syncshell
-String form: <syncshell.syncshell.Syncshell object at 0x7fa35d7d87f0>
+Type:        Application
+String form: <syncshell.cli.Application object at 0x1035f51c0>
+Docstring:   SyncShell CLI Application
 
 Usage:       syncshell 
              syncshell auth
