@@ -4,5 +4,10 @@
 from fire import Fire
 from syncshell.cli import Application
 
-if __name__ == "__main__":
+
+def main():
     Fire(Application)
+
+
+if __name__ == "__main__":
+    main()

@@ -5,9 +5,7 @@ description = "Keep your machine's shell history synchronized."
 
 license = "MIT"
 
-authors = [
-    "Masoud Ghorbani <msud.ghorbani@gmail.com>"
-]
+authors = ["Masoud Ghorbani <msud.ghorbani@gmail.com>"]
 
 readme = "README.md"
 
@@ -38,3 +36,7 @@ exclude = '''
     | dist
 )/
 '''
+
+# Ref: https://python-poetry.org/docs/pyproject/#scripts
+[project.scripts]
+syncshell = "syncshell.__main__:main"
