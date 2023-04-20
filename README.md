@@ -83,24 +83,29 @@ $ syncshell download
 - [x] Support `zsh`, `bash`
 
 ## Contributing
-So nice you wanna contribute to this repository. Thank you. You may contribute in several ways consists of:
+Appreciate the contribution to this repository.
 
-* Creating new features
-* Fixing bugs
+To contribute, you need to follow the below steps for suggesting a change or a new feature:
 
-#### Installing dependencies
-[Poetry Installation](https://python-poetry.org/docs/#installation) is straightforward walkthough to setup a versatile package manager.
+### Installing dependencies
 
-By the following command install syncshell dependencies
+1. Install [poetry](https://python-poetry.org/docs/#installation) as a dependency manager
+2. Install dependencies
+
 ```bash
-# Clone syncshell repository
-$ git clone git@github.com:msudgh/syncshell.git
-$ cd syncshell
 $ poetry install
 ```
 
-#### Tests
-Before submiting your PR, Execute the below command to be sure about passing test cases.
+### Running
+
+```bash
+$ poetry run python syncshell
+# or
+$ python syncshell
+```
+
+### Tests
+Before submit a PR, execute the below command to ensure test cases are passed.
 ```bash
 $ poetry run pytest -c pytest.ini -s
 ```
