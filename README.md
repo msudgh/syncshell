@@ -1,45 +1,66 @@
-<h1 align="center">SyncShell</h1>
+# SyncShell
+<!-- License -->
+<a href="https://mit-license.org/msudgh">
+  <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"
+    alt="MIT License" />
+</a>
+<!-- Build Status -->
+<a href="https://github.com/msudgh/syncshell/actions/workflows/test.yaml">
+  <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=main"
+    alt="Build Status" />
+</a>
+<!-- Releases -->
+<a href="https://github.com/msudgh/syncshell/releases">
+  <img src="https://img.shields.io/github/release/msudgh/syncshell.svg"
+    alt="PyPi" />
+</a>
+<!-- PyPi -->
+<a href="https://pypi.org/project/syncshell/">
+  <img src="https://img.shields.io/pypi/v/syncshell.svg"
+    alt="PyPi" />
+</a>
 
-<div align="center">
-  <strong>Yet another tool for laziness</strong>
-</div>
-<div align="center">
-  Keep your machine's shell history synchronized
-</div>
-<br/>
-<div align="center">
-  <!-- Build Status -->
-  <a href="https://github.com/msudgh/syncshell/actions/workflows/test.yaml">
-    <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=main"
-      alt="Build Status" />
-  </a>
-  <!-- License -->
-  <a href="https://mit-license.org/msudgh">
-    <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"
-      alt="MIT License" />
-  </a>
-  <!-- Release -->
-  <a href="https://github.com/msudgh/syncshell/releases">
-    <img src="https://img.shields.io/github/release/msudgh/syncshell.svg"
-      alt="PyPi" />
-  </a>
-  <!-- PyPi -->
-  <a href="https://pypi.org/project/syncshell/">
-    <img src="https://img.shields.io/pypi/v/syncshell.svg"
-      alt="PyPi" />
-  </a>
-</div>
-<br/>
+SyncShell as a simple and secure tool allows to synchronize machine's shell history across devices. It's built on top of Github Gist and written in Python (CLI). With SyncShell, you no longer have to worry about manually syncing your office and home machine's shell history and let continue where the terminal session left.
 
-## Get SyncShell
-Currently, `SyncShell` is just available on `PyPi` and by the following command install the latest version:
+## Features
+
+- Sync your shell history across all your devices
+- Securely store your shell history on Github Gist
+- Support for `zsh` and `bash` shells
+- Easy to install and use
+
+## Installation
+To install SyncShell, simply run the following command:
+
 ```bash
-$ pip install syncshell # Maybe sudo need
+$ pip install syncshell
 ```
+
+## Usage
+To use SyncShell, It first needs to set up a Github token key by following these steps:
+
+1. Open [**Github personal access tokens**](https://github.com/settings/tokens) page, [**Generate a new token**](https://github.com/settings/tokens/new) with `gist` scope feature.
+2. Execute the **`syncshell auth`** command, Enter the token key to validate and confirm it.
+
+Once finished, try to upload shell history by the following command:
+
 ```bash
-$ syncshell -- --help
+$ syncshell upload
+```
+
+After uploading, the download command lets to sync and pull changes on the other machines:
+
+```bash
+$ syncshell download
+```
+
+
+### Synopsis
+
+```bash
+$ syncshell
 Type:        Application
-String form: <syncshell.cli.Application object at 0x1035f51c0>
+String form: <syncshell.cli.Application object at 0x101b1ff10>
 Docstring:   SyncShell CLI Application
 
 Usage:       syncshell 
@@ -49,68 +70,24 @@ Usage:       syncshell
 ```
 
 ## How it Works
-The actual idea of SyncShell is synchronization of your all device's shell history, it means you don't need to have concerns when you want to sync your office and home machine's shell history. Application integrated and built on top of Github Gist, and written in Python (CLI).
 
-According to Github API, you can generate a token key with `gist` scope to access to Gist. 
-Gists have two **`public`**, **`secret`** type which syncshell while executing `syncshell upload` command will upload your history file and store them on Github Gist securely (**private**).
+SyncShell is a tool that synchronizes shell history across all devices by securely storing the history file on Github Gist. Github Gist provides two types of Gists, `public` and `secret`. When the `syncshell upload` command is executed, the shell history file is uploaded and stored securely on Github Gist as a secret Gist. To download the uploaded shell history on other devices, the `syncshell download` command is used. This command retrieves the previously uploaded Gist, allowing the user to access their shell history on any device.
 
-On the others machine, by executing `syncshell download` after entering your token key and created Gist ID you can download the gist and sync your shell's history.
+**Security:** A Gist will be secret until it's not shared and will be secret and safe until you only have the Github Token and Gist ID.
 
-  > Gists will be secret until you don't share it with someone else, In other words, It'll be secret and safe until you only have the Github Token and Gist ID.
-
-## Usage
-  > Currently, `SyncShell` just support `zsh` and supporting other shells is in WIP.
-
-Before SyncShell can be useful you need to setup your Github token key:
-
-  1. Open [**Github personal access tokens**](https://github.com/settings/tokens) page, [**Generate a new token**](https://github.com/settings/tokens/new) with `gist` scope feature.
-  2. Execute the **`syncshell auth`** command, Enter your token key to validate and confirm it.
-  3. Done :wink:
-
-Now you can try to upload your shell history by the following command:
-
-```bash
-$ syncshell upload
-```
-
-After the uploading process, you'll take a Gist ID that by this ID and your Github token, you can download history on the others machine by executing the following command:
-```bash
-$ syncshell download
-```
-
-## Todo
-- [ ] Write more test cases
-- [x] Support `zsh`, `bash`
+**Privacy:** In case of having password or secret in a history file, Its suggested to first have a alignment with privacy policies for any usecase.
 
 ## Contributing
 Appreciate the contribution to this repository.
 
 To contribute, you need to follow the below steps for suggesting a change or a new feature:
 
-### Installing dependencies
-
 1. Install [poetry](https://python-poetry.org/docs/#installation) as a dependency manager
-2. Install dependencies
-
-```bash
-$ poetry install
-```
-
-### Running
-
-```bash
-$ poetry run python syncshell
-# or
-$ python syncshell
-```
-
-### Tests
-Before submit a PR, execute the below command to ensure test cases are passed.
-```bash
-$ poetry run pytest -c pytest.ini -s
-```
-
-Done :wink:
+2. Install dependencies by running ```poetry install```
+3. Make your changes
+4. Run and debug your changes by running ```poetry run python syncshell```
+5. Run tests by running ```poetry run pytest -c pytest.ini -s```
+6. Submit a pull request
 
 ## License
 The code is licensed under the MIT License. See the data's [LICENSE](https://github.com/msudgh/syncshell/blob/main/LICENSE) file for more information.
