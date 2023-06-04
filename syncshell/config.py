@@ -6,7 +6,7 @@ import os
 from shutil import copy
 from configparser import ConfigParser, Error as ConfigParserError
 from github import Github, GithubException
-from syncshell.utils import constants, spinner as Spinner
+from syncshell.utils import constants
 
 
 class SyncShellConfig:
@@ -67,21 +67,14 @@ class SyncShellConfig:
             sys.exit(1)
             return False
 
-    def is_logged_in(self, in_background=True):
+    def is_logged_in(self):
         """Check user exists in config file"""
-
         try:
             user = self.gist.get_user()
+
             if not user.login:
                 return False
 
-            if not in_background:
-                spinner = Spinner.NewTask("Check authenticated ...")
-                spinner.succeed("Your Github token key is authenticated.")
-
             return True
         except GithubException:
-            fail_text = "Your Github token key is not valid. Authenticate first."
-            spinner.fail(fail_text)
-
             return False
