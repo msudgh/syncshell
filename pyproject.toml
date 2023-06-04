@@ -24,9 +24,6 @@ PyGithub = "1.55"
 pytest = "7.3.1"
 pytest-testdox = "^3.0.1"
 
-[tool.poetry.dev-dependencies]
-pre-commit = { version = "^3.3.2", python = ">=3.8,<4.0.0" }
-
 [tool.black]
 py36 = true
 include = '\.pyi?$'
