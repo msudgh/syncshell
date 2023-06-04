@@ -41,5 +41,5 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Natural Language :: English",
     ],
-    python_requires=">=3.7.13",
+    python_requires=">=3.8.1",
 )

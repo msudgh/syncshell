@@ -22,10 +22,17 @@ def prepare_payload():
     files = {}
     config_path = constants.CONFIG_PATH
 
-    with open(constants.SHELL_HISTORY_PATH, mode="r") as history_file:
-        files[os.path.basename(history_file.name)] = InputFileContent(
-            history_file.read()
-        )
+    with open(constants.SHELL_HISTORY_PATH, "r") as history_file:
+        history_file_path = os.path.basename(history_file.name)
+        try:
+            content = history_file.read()
+            files[history_file_path] = InputFileContent(content)
+        except UnicodeDecodeError:
+            with open(
+                constants.SHELL_HISTORY_PATH, "r", encoding="latin-1"
+            ) as history_file_latin_1:
+                content = history_file_latin_1.read()
+                files[history_file_path] = InputFileContent(content)
 
     with open(config_path, mode="r") as config_file:
         # Remove token key on uplaod
@@ -59,9 +66,15 @@ class Application:
             # Set new token key
             config.gist = Github(config.parser["Auth"]["token"])
 
+            spinner = Spinner.NewTask("Check authentication...")
+
             # Write config file if Github user alreaded authorized
-            if config.is_logged_in(False):
+            if config.is_logged_in():
+                spinner.succeed("Your Github token key is authenticated.")
                 config.write()
+            else:
+                spinner.fail("Your Github token key is not valid.")
+                sys.exit(1)
         except KeyboardInterrupt:
             sys.exit(0)
 
@@ -71,6 +84,7 @@ class Application:
 
         # Exit process if not logged in
         if not config.is_logged_in():
+            spinner.fail("Your Github token key is not valid. Authenticate first.")
             sys.exit(1)
 
         try:
@@ -82,6 +96,7 @@ class Application:
                 config.write()
 
                 files = prepare_payload()
+
                 gist.edit(files=files)
 
                 spinner.succeed(f"Gist ID ({gist.id}) updated.")
