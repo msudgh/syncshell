@@ -16,41 +16,37 @@ config = SyncShellConfig()
 config.read()
 
 
-def prepare_payload():
-    """Prepare history and config file for upload"""
-
-    files = {}
-    config_path = constants.CONFIG_PATH
-
-    with open(constants.SHELL_HISTORY_PATH, "r") as history_file:
-        history_file_path = os.path.basename(history_file.name)
-        try:
-            content = history_file.read()
-            files[history_file_path] = InputFileContent(content)
-        except UnicodeDecodeError:
-            with open(
-                constants.SHELL_HISTORY_PATH, "r", encoding="latin-1"
-            ) as history_file_latin_1:
-                content = history_file_latin_1.read()
-                files[history_file_path] = InputFileContent(content)
-
-    with open(config_path, mode="r") as config_file:
-        # Remove token key on uplaod
-        lines = config_file.readlines()
-        lines.pop(1)
-
-        files[os.path.basename(config_file.name)] = InputFileContent(
-            "".join(map(str, lines))
-        )
-
-    return files
-
-
 class Application:
     """SyncShell CLI Application"""
 
-    def __init__(self):
-        pass
+    def __prepare_payload(self):
+        """Prepare history and config file for upload"""
+
+        files = {}
+        config_path = constants.CONFIG_PATH
+
+        with open(constants.SHELL_HISTORY_PATH, "r") as history_file:
+            history_file_path = os.path.basename(history_file.name)
+            try:
+                content = history_file.read()
+                files[history_file_path] = InputFileContent(content)
+            except UnicodeDecodeError:
+                with open(
+                    constants.SHELL_HISTORY_PATH, "r", encoding="latin-1"
+                ) as history_file_latin_1:
+                    content = history_file_latin_1.read()
+                    files[history_file_path] = InputFileContent(content)
+
+        with open(config_path, mode="r") as config_file:
+            # Remove token key on uplaod
+            lines = config_file.readlines()
+            lines.pop(1)
+
+            files[os.path.basename(config_file.name)] = InputFileContent(
+                "".join(map(str, lines))
+            )
+
+        return files
 
     def auth(self):
         """Retrieve & authenticate user token"""
@@ -95,7 +91,7 @@ class Application:
                 config.parser["Upload"]["last_date"] = str(int(time.time()))
                 config.write()
 
-                files = prepare_payload()
+                files = self.__prepare_payload()
 
                 gist.edit(files=files)
 
@@ -104,7 +100,7 @@ class Application:
                 description = "SyncShell Gist"
 
                 user = config.gist.get_user()
-                files = prepare_payload()
+                files = self.__prepare_payload()
                 gist = user.create_gist(False, files, description)
 
                 # Set upload date
@@ -113,7 +109,7 @@ class Application:
 
                 config.write()
 
-                files = prepare_payload()
+                files = self.__prepare_payload()
                 gist.edit(files=files)
                 spinner.succeed(f"New Gist ID ({gist.id}) created.")
         except FileNotFoundError:
