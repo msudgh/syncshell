@@ -21,7 +21,7 @@ fire = "0.5.0"
 flake8 = "6.0.0"
 halo = "0.0.31"
 PyGithub = "1.58.2"
-pytest = "7.3.2"
+pytest = "7.4.0"
 pytest-testdox = "^3.0.1"
 
 [tool.black]
