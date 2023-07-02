@@ -78,3 +78,38 @@ class SyncShellConfig:
             return True
         except GithubException:
             return False
+
+    def get_shell_history(self):
+        """Return shell history file path and content"""
+        with open(self.parser["Shell"]["path"], "r") as history_file:
+            history_file_path = os.path.basename(history_file.name)
+            try:
+                content = history_file.read()
+
+                return {"path": history_file_path, "content": content}
+            except UnicodeDecodeError:
+                with open(
+                    self.parser["Shell"]["path"], "r", encoding="latin-1"
+                ) as history_file_latin_1:
+                    content = history_file_latin_1.read()
+
+                return {"path": history_file_path, "content": content}
+
+    def write_shell_history(self, content):
+        """Write shell history content"""
+        with open(self.parser["Shell"]["path"], "w") as history_file:
+            history_file.write(content)
+
+    def get_config(self):
+        """Return config file path and content"""
+        with open(self.path, mode="r") as config_file:
+            config_file_path = os.path.basename(config_file.name)
+
+            # Remove token key on uplaod
+            lines = config_file.readlines()
+            lines.pop(1)
+
+            return {
+                "path": config_file_path,
+                "content": "".join(map(str, lines)),
+            }

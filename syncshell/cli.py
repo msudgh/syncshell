@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import os
 import textwrap
 import time
 from configparser import ConfigParser
 from subprocess import run, PIPE
 from github import Github, InputFileContent, UnknownObjectException
 from syncshell.utils import constants, spinner as Spinner
-from syncshell.config import SyncShellConfig
+from syncshell.utils.config import SyncShellConfig
 
 # Configuration
 config = SyncShellConfig()
@@ -23,28 +22,11 @@ class Application:
         """Prepare history and config file for upload"""
 
         files = {}
-        config_path = constants.CONFIG_PATH
+        history_file = config.get_shell_history()
+        config_file = config.get_config()
 
-        with open(constants.SHELL_HISTORY_PATH, "r") as history_file:
-            history_file_path = os.path.basename(history_file.name)
-            try:
-                content = history_file.read()
-                files[history_file_path] = InputFileContent(content)
-            except UnicodeDecodeError:
-                with open(
-                    constants.SHELL_HISTORY_PATH, "r", encoding="latin-1"
-                ) as history_file_latin_1:
-                    content = history_file_latin_1.read()
-                    files[history_file_path] = InputFileContent(content)
-
-        with open(config_path, mode="r") as config_file:
-            # Remove token key on uplaod
-            lines = config_file.readlines()
-            lines.pop(1)
-
-            files[os.path.basename(config_file.name)] = InputFileContent(
-                "".join(map(str, lines))
-            )
+        files[history_file["path"]] = InputFileContent(history_file["content"])
+        files[config_file["path"]] = InputFileContent(config_file["content"])
 
         return files
 
@@ -167,47 +149,47 @@ class Application:
             config.parser["Auth"]["gist_id"] = gist_id
             config.write()
 
-            with open(constants.SHELL_HISTORY_PATH, "r+") as history_file:
-                history = history_file.read()
+            history_file = config.get_shell_history()
+            history_content = history_file["content"]
 
-                new_changes = gist.files[
-                    constants.SUPPORTED_SHELLS[config.parser["Shell"]["name"]]
-                ]
+            new_changes = gist.files[
+                constants.SUPPORTED_SHELLS[config.parser["Shell"]["name"]]
+            ]
 
-                synced_changes = new_changes.content + history
+            synced_changes = new_changes.content + history_content
 
-                awk_proc = run(
-                    [
-                        "awk",
-                        '"/:[0-9]/ { if(s) { print s } s=$0 } !/:[0-9]/ { s=s"\n"$0 } END { print s }"',
-                    ],
-                    stdout=PIPE,
-                    input=bytes(synced_changes, encoding="utf8"),
-                    check=True,
-                )
+            awk_proc = run(
+                [
+                    "awk",
+                    '"/:[0-9]/ { if(s) { print s } s=$0 } !/:[0-9]/ { s=s"\n"$0 } END { print s }"',
+                ],
+                stdout=PIPE,
+                input=bytes(synced_changes, encoding="utf8"),
+                check=True,
+            )
 
-                # Remove duplicate lines
-                awk_duplicates_proc = run(
-                    [
-                        "awk",
-                        '"!visited[$0]++ { print $0 }"',
-                    ],
-                    stdout=PIPE,
-                    input=bytes(awk_proc.stdout.decode("utf-8"), encoding="utf8"),
-                    check=True,
-                )
+            # Remove duplicate lines
+            awk_duplicates_proc = run(
+                [
+                    "awk",
+                    '"!visited[$0]++ { print $0 }"',
+                ],
+                stdout=PIPE,
+                input=bytes(awk_proc.stdout.decode("utf-8"), encoding="utf8"),
+                check=True,
+            )
 
-                sort_proc = run(
-                    ["sort", "-u"],
-                    stdout=PIPE,
-                    input=bytes(
-                        awk_duplicates_proc.stdout.decode("utf-8"), encoding="utf8"
-                    ),
-                    check=True,
-                )
+            sort_proc = run(
+                ["sort", "-u"],
+                stdout=PIPE,
+                input=bytes(
+                    awk_duplicates_proc.stdout.decode("utf-8"), encoding="utf8"
+                ),
+                check=True,
+            )
 
-                history_file.write(sort_proc.stdout.decode("utf-8"))
-                spinner.succeed("Gist downloaded and stored.")
+            config.write_shell_history(sort_proc.stdout.decode("utf-8"))
+            spinner.succeed("Gist downloaded and stored.")
         except KeyboardInterrupt:
             sys.exit(0)
         except FileNotFoundError:

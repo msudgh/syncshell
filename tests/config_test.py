@@ -3,7 +3,7 @@
 
 import pytest
 from syncshell.utils import constants
-from syncshell.config import SyncShellConfig
+from syncshell.utils.config import SyncShellConfig
 
 
 @pytest.mark.config
