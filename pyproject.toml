@@ -23,6 +23,7 @@ halo = "0.0.31"
 PyGithub = "1.59.0"
 pytest = "7.4.0"
 pytest-testdox = "^3.0.1"
+pathlib = "^1.0.1"
 
 [tool.black]
 py36 = true

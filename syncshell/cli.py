@@ -12,7 +12,7 @@ from syncshell.utils.config import SyncShellConfig
 
 # Configuration
 config = SyncShellConfig()
-config.read()
+config.read_config()
 
 
 class Application:
