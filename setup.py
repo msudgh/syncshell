@@ -20,13 +20,13 @@ setup(
     packages=["syncshell"],
     entry_points={"console_scripts": ["syncshell = syncshell.__main__:main"]},
     version=__version__,
-    description="Keep your machine's shell history synchronized.",
+    description="Keep your machine's shell history synchronize",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Masoud Ghorbani",
-    author_email="msud.ghorbani@gmail.com",
+    author_email="masoudghorbani@pm.me",
     maintainer="Masoud Ghorbani",
-    maintainer_email="msud.ghorbani@gmail.com",
+    maintainer_email="masoudghorbani@pm.me",
     url="https://github.com/msudgh/syncshell",
     project_urls={
         "Bug Reports": "https://github.com/msudgh/syncshell/issues",
@@ -45,7 +45,7 @@ setup(
         "Natural Language :: English",
         "Topic :: Utilities",
         "Topic :: System :: Shells",
-        "Topic :: Software Development"
+        "Topic :: Software Development",
     ],
     python_requires=">=3.8.16",
 )
