@@ -1,26 +1,41 @@
 [tool.poetry]
 name = "syncshell"
-version = "1.0.6"
-description = "Keep your machine's shell history synchronized."
-
+version = "v1.0.7"
+description = "Keep your machine's shell history synchronized"
 license = "MIT"
-
-authors = ["Masoud Ghorbani <msud.ghorbani@gmail.com>"]
-
+authors = ["Masoud Ghorbani <masoudghorbani@pm.me>"]
 readme = "README.md"
-
 repository = "https://github.com/msudgh/syncshell"
 homepage = "https://github.com/msudgh/syncshell"
-
 keywords = ["sync", "shell", "history", "bash", "zsh"]
+include = [
+    { path = ".syncshell.ini", format = "wheel" },
+    { path = "README.md", format = "wheel" },
+    { path = "pyproject.toml", format = "wheel" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Natural Language :: English",
+    "Topic :: Utilities",
+    "Topic :: System :: Shells",
+    "Topic :: Software Development",
+]
 
 [tool.poetry.dependencies]
 python = "^3.8.16"
-black = "23.3.0"
 fire = "0.5.0"
-flake8 = "6.0.0"
 halo = "0.0.31"
-PyGithub = "1.58.2"
+PyGithub = "1.59.0"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+black = "23.3.0"
 pytest = "7.4.0"
 pytest-testdox = "^3.0.1"
 
@@ -35,5 +50,5 @@ exclude = '''
 '''
 
 # Ref: https://python-poetry.org/docs/pyproject/#scripts
-[project.scripts]
-syncshell = "syncshell.__main__:main"
+[tool.poetry.scripts]
+syncshell = "syncshell.cli:main"

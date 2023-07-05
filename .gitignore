@@ -102,3 +102,6 @@ ENV/
 .vscode/settings.json
 .pytest_cache
 .pypirc
+
+# MacOS
+.DS_Store
