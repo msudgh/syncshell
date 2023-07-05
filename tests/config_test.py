@@ -5,7 +5,7 @@ import pytest
 from unittest.mock import patch
 from syncshell.utils.config import SyncShellConfig
 from syncshell.utils import constants
-import pathlib
+import os
 from configparser import ConfigParser
 
 temp_history_file_path = "/tmp/.zsh_history"
@@ -28,8 +28,8 @@ def config_path():
     yield config_file_path
 
     # Clean up the temporary config file after the test
-    pathlib.Path(config_file_path).unlink()
-    pathlib.Path(temp_history_file_path).unlink()
+    os.remove(config_file_path)
+    os.remove(temp_history_file_path)
 
 
 def test_read_config(config_path, monkeypatch):

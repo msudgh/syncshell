@@ -28,8 +28,8 @@ class SyncShellConfig:
         self.github = None
 
         # Copy template config file to home directory
-        # if os.path.exists(constants.CONFIG_PATH) is False:
-        #     copy(constants.CONFIG_PATH_TEMPLATE, constants.CONFIG_PATH)
+        if os.path.exists(constants.CONFIG_PATH) is False:
+            copy(constants.CONFIG_PATH_TEMPLATE, constants.CONFIG_PATH)
 
     def __deepcopy__(self, memo):
         return self
@@ -37,13 +37,24 @@ class SyncShellConfig:
     def read_config(self):
         """Read and parse config file and config object"""
         try:
-            self.parser.read(self.path)
+            with open(self.path) as fh:
+                self.parser.read_file(fh)
 
-            auth_token = self.parser["Auth"]["token"]
-            self.github = Github(auth=Auth.Token(auth_token))
+            # if parser has auth token, then create github object
+            has_auth_token = (
+                self.parser.has_option("Auth", "token")
+                and len(self.parser["Auth"]["token"]) > 0
+            )
 
-            # Set Shell and write new config
-            if not self.parser["Shell"]["name"] or not self.parser["Shell"]["path"]:
+            if has_auth_token:
+                auth_token = self.parser["Auth"]["token"]
+                self.github = Github(auth=Auth.Token(auth_token))
+
+            shell_name = self.parser["Shell"]["name"]
+            shell_path = self.parser["Shell"]["path"]
+
+            # Overwrite shell config if not exists
+            if not shell_name or not shell_path:
                 self.parser["Shell"]["name"] = constants.SHELL
                 self.parser["Shell"]["path"] = constants.SHELL_HISTORY_PATH
 
@@ -53,7 +64,6 @@ class SyncShellConfig:
         except ConfigParserError:
             print("Unable to read config file.")
             sys.exit(1)
-            return False
 
     def save_config(self, path=None):
         """Save new config"""
@@ -68,7 +78,6 @@ class SyncShellConfig:
         except IOError:
             print("Unable to save config file.")
             sys.exit(1)
-            return False
 
     def is_logged_in(self):
         """Check user exists in config file"""

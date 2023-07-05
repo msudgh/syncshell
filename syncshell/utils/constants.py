@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-from pathlib import Path
 
 # Metainfo
 APP_NAME = "syncshell"
@@ -14,6 +13,7 @@ APP_ROOT_DIR = os.path.abspath(
 CONFIG_FILENAME = ".syncshell.ini"
 CONFIG_PATH_TEMPLATE = os.path.join(APP_ROOT_DIR, CONFIG_FILENAME)
 CONFIG_PATH = os.path.join(os.path.expanduser("~"), CONFIG_FILENAME)
+USER_HOME = os.path.expanduser("~")
 
 # String Colors
 DEFAULT = "\033[39m"
@@ -29,7 +29,7 @@ SUPPORTED_SHELLS = {
     "zsh": ".zsh_history",
 }
 SHELL = os.path.basename(os.environ.get("SHELL", "bash"))
-SHELL_HISTORY_PATH = str(Path.joinpath(Path.home(), SUPPORTED_SHELLS[SHELL]))
+SHELL_HISTORY_PATH = os.path.join(USER_HOME, SUPPORTED_SHELLS[SHELL])
 HELP_MESSAGE = (
     "If you don't have Github token key, "
     "Please, first go to "

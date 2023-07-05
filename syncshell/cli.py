@@ -9,6 +9,7 @@ from subprocess import run, PIPE
 from github import Github, InputFileContent, UnknownObjectException
 from syncshell.utils import constants, spinner as Spinner
 from syncshell.utils.config import SyncShellConfig
+from fire import Fire
 
 # Configuration
 config = SyncShellConfig()
@@ -197,3 +198,7 @@ class Application:
             sys.exit(1)
         except OSError:
             sys.exit(1)
+
+
+def main():
+    Fire(Application)
