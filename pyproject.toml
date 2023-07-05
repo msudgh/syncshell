@@ -34,10 +34,10 @@ halo = "0.0.31"
 PyGithub = "1.59.0"
 
 [tool.poetry.group.dev.dependencies]
-flake8 = {version = "^6.0.0", optional = true}
-black = {version = "23.3.0", optional = true}
-pytest = {version = "7.4.0", optional = true}
-pytest-testdox = {version = "^3.0.1", optional = true}
+flake8 = "^6.0.0"
+black = "23.3.0"
+pytest = "7.4.0"
+pytest-testdox = "^3.0.1"
 
 [tool.black]
 py36 = true

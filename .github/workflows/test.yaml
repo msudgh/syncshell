@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          poetry install
+          poetry install --with dev
           # All python related commands should be executed by poetry run.
           # Checkout the following examples.
       - name: Lint with flake8
