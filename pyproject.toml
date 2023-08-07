@@ -31,7 +31,7 @@ classifiers = [
 python = "^3.8.16"
 fire = "0.5.0"
 halo = "0.0.31"
-PyGithub = "1.59.0"
+PyGithub = "1.59.1"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"
