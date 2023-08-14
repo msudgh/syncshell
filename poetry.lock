@@ -595,13 +595,13 @@ testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "no
 
 [[package]]
 name = "pytest-testdox"
-version = "3.0.1"
+version = "3.1.0"
 description = "A testdox format reporter for pytest"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "pytest-testdox-3.0.1.tar.gz", hash = "sha256:d9db369821241c1f5762c2585029ebfd5142fe6f35cbe7450660d853b7f6debb"},
-    {file = "pytest_testdox-3.0.1-py2.py3-none-any.whl", hash = "sha256:e69ea6ebd83e410af468c4554ab042c1148edd3d1f29980e18248099bc9e222b"},
+    {file = "pytest-testdox-3.1.0.tar.gz", hash = "sha256:f48c49c517f0fb926560b383062db4961112078ec6ca555f91692c661bb5c765"},
+    {file = "pytest_testdox-3.1.0-py2.py3-none-any.whl", hash = "sha256:f3a8f0789d668ccfb60f15aab81fb927b75066cfd19209176166bd7cecae73e6"},
 ]
 
 [package.dependencies]
