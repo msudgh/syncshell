@@ -35,7 +35,7 @@ PyGithub = "2.1.1"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"
-black = "23.10.1"
+black = "23.11.0"
 pytest = "7.4.3"
 pytest-testdox = "^3.0.1"
 
