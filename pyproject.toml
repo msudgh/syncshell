@@ -34,22 +34,10 @@ halo = "0.0.31"
 PyGithub = "1.59.0"
 
 [tool.poetry.group.dev.dependencies]
-flake8 = "^6.0.0"
-black = "23.3.0"
 pytest = "7.4.0"
 pytest-testdox = "^3.0.1"
 ruff = "^0.1.5"
 pre-commit = "^3.5.0"
-
-[tool.black]
-py36 = true
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-    | dist
-)/
-'''
 
 # Ref: https://python-poetry.org/docs/pyproject/#scripts
 [tool.poetry.scripts]

@@ -1,4 +1,4 @@
-name: Ruff
+name: Code Formatter
 on: [ push, pull_request ]
 jobs:
   ruff:
