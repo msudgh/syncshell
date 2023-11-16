@@ -113,7 +113,7 @@ class SyncShellConfig:
             with open(self.parser["Shell"]["path"], "w") as history_file:
                 history_file.write(content)
                 return True
-        except:
+        except IOError:
             return False
 
     def get_config(self):

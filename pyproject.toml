@@ -11,7 +11,7 @@ keywords = ["sync", "shell", "history", "bash", "zsh"]
 include = [
     { path = ".syncshell.ini", format = "wheel" },
     { path = "README.md", format = "wheel" },
-    { path = "pyproject.toml", format = "wheel" }
+    { path = "pyproject.toml", format = "wheel" },
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -38,6 +38,8 @@ flake8 = "^6.0.0"
 black = "23.3.0"
 pytest = "7.4.0"
 pytest-testdox = "^3.0.1"
+ruff = "^0.1.5"
+pre-commit = "^3.5.0"
 
 [tool.black]
 py36 = true
