@@ -27,8 +27,7 @@ class SyncShellConfig:
         self.parser = ConfigParser()
         self.github = None
 
-        # Copy template config file to home directory
-        if os.path.exists(constants.CONFIG_PATH) is False:
+        if os.path.exists(path) is False or os.path.getsize(path) == 0:
             copy(constants.CONFIG_PATH_TEMPLATE, constants.CONFIG_PATH)
 
     def __deepcopy__(self, memo):
@@ -113,7 +112,7 @@ class SyncShellConfig:
             with open(self.parser["Shell"]["path"], "w") as history_file:
                 history_file.write(content)
                 return True
-        except:
+        except IOError:
             return False
 
     def get_config(self):
