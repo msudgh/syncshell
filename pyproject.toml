@@ -36,7 +36,7 @@ PyGithub = "2.1.1"
 [tool.poetry.group.dev.dependencies]
 pytest = "8.0.0"
 pytest-testdox = "^3.0.1"
-ruff = "^0.1.5"
+ruff = ">=0.1.5,<0.3.0"
 pre-commit = "^3.5.0"
 
 # Ref: https://python-poetry.org/docs/pyproject/#scripts
