@@ -63,7 +63,7 @@ Type:        Application
 String form: <syncshell.cli.Application object at 0x101b1ff10>
 Docstring:   SyncShell CLI Application
 
-Usage:       syncshell 
+Usage:       syncshell
              syncshell auth
              syncshell download
              syncshell upload
@@ -78,12 +78,20 @@ SyncShell is a tool that synchronizes shell history across all devices by secure
 **Privacy:** In case of having password or secret in a history file, Its suggested to first have a alignment with privacy policies for any usecase.
 
 ## Contributing
-Appreciate the contribution to this repository.
 
-To contribute, you need to follow the below steps for suggesting a change or a new feature:
+I would love to have your help in making SyncShell idea better and expand it capabilities.
+
+### Branching
+
+- `main` is being used for the latest development version.
+- `release` is being used for the latest stable version.
+
+
+### Pull Requests
+To contribute follow the below steps:
 
 1. Install [poetry](https://python-poetry.org/docs/#installation) as a dependency manager
-2. Install dependencies by running ```poetry install```
+2. Install dependencies by running ```poetry shell && poetry install```
 3. Make your changes
 4. Run and debug your changes by running ```poetry run python syncshell```
 5. Run tests by running ```poetry run pytest -c pytest.ini -s```
