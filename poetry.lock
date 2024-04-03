@@ -310,12 +310,12 @@ typing = ["typing-extensions (>=4.8)"]
 
 [[package]]
 name = "fire"
-version = "0.5.0"
+version = "0.6.0"
 description = "A library for automatically generating command line interfaces."
 optional = false
 python-versions = "*"
 files = [
-    {file = "fire-0.5.0.tar.gz", hash = "sha256:a6b0d49e98c8963910021f92bba66f65ab440da2982b78eb1bbf95a0a34aacc6"},
+    {file = "fire-0.6.0.tar.gz", hash = "sha256:54ec5b996ecdd3c0309c800324a0703d6da512241bc73b553db959d98de0aa66"},
 ]
 
 [package.dependencies]
@@ -877,4 +877,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.16"
-content-hash = "6e960bdcd170fc842694643100b8b79a83d40d99204292d30d2c3eaa6c839637"
+content-hash = "4613a7b671723c627cb9d43311d52e345b5dc9adcf2294745196f2c2fb39c3d0"
