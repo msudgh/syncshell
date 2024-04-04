@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "syncshell"
-version = "v1.0.7"
+version = "v1.0.8"
 description = "Keep your machine's shell history synchronized"
 license = "MIT"
 authors = ["Masoud Ghorbani <masoudghorbani@pm.me>"]
@@ -28,10 +28,10 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8.16"
-fire = "0.5.0"
+python = "^3.8.18"
+fire = "0.6.0"
 halo = "0.0.31"
-PyGithub = "2.2.0"
+PyGithub = "2.3.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "8.1.1"
