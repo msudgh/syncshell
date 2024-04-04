@@ -14,11 +14,11 @@ class NewTask:
         self.__spinner.start()
 
     def succeed(self, text):
-        """Overide Halo succeed method"""
+        """Override Halo succeed method"""
         self.__spinner.succeed(text)
         self.__spinner.stop()
 
     def fail(self, text):
-        """Overide Halo fail method"""
+        """Override Halo fail method"""
         self.__spinner.fail(text)
         self.__spinner.stop()

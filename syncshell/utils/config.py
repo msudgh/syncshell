@@ -11,7 +11,7 @@ from syncshell.utils import constants
 
 
 class SyncShellConfig:
-    """Config class consits of fundamental methods to read, save and validate
+    """Config class consists of fundamental methods to read, save and validate
     config file for different scenarios of syncshell.
     """
 
@@ -120,7 +120,7 @@ class SyncShellConfig:
         with open(self.path, "r") as config_file:
             config_file_path = os.path.basename(config_file.name)
 
-            # Remove token key on uplaod
+            # Remove token key on upload
             lines = config_file.readlines()
             lines.pop(1)
 
