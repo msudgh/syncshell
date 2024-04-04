@@ -32,7 +32,7 @@ class Application:
         return files
 
     def auth(self):
-        """Retrieve & authenticate user token"""
+        """Retrieve & authenticate user's token"""
         try:
             # Help message
             getting_started = textwrap.fill(constants.HELP_MESSAGE, width=80)
@@ -58,7 +58,7 @@ class Application:
             sys.exit(0)
 
     def upload(self):
-        """Upload current history"""
+        """Upload history and config file to Gist"""
         spinner = Spinner.NewTask("Uploading ...")
 
         # Exit process if not logged in
@@ -114,7 +114,7 @@ class Application:
             sys.exit(1)
 
     def download(self):
-        """Download Gist and save it to history file"""
+        """Download history and config file from Gist"""
 
         try:
             token = str(input("Enter your Github token key: "))
