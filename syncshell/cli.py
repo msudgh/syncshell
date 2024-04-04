@@ -38,7 +38,7 @@ class Application:
             getting_started = textwrap.fill(constants.HELP_MESSAGE, width=80)
             print(getting_started)
 
-            # Promte token key
+            # Prompt token key
             prompt_token = input("Enter your Github token key: ")
             config.parser["Auth"]["token"] = str(prompt_token)
 
@@ -47,7 +47,7 @@ class Application:
 
             spinner = Spinner.NewTask("Check authentication...")
 
-            # Write config file if Github user alreaded authorized
+            # Write config file if Github user already authorized
             if config.is_logged_in():
                 spinner.succeed("Your Github token key is authenticated.")
                 config.write()
