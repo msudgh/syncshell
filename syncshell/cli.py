@@ -32,7 +32,7 @@ class Application:
         return files
 
     def auth(self):
-        """Retrieve & authenticate user token"""
+        """Retrieve & authenticate user's token"""
         try:
             # Help message
             getting_started = textwrap.fill(constants.HELP_MESSAGE, width=80)
@@ -43,14 +43,14 @@ class Application:
             config.parser["Auth"]["token"] = str(prompt_token)
 
             # Set new token key
-            config.gist = Github(config.parser["Auth"]["token"])
+            config.github = Github(config.parser["Auth"]["token"])
 
             spinner = Spinner.NewTask("Check authentication...")
 
             # Write config file if Github user already authorized
             if config.is_logged_in():
                 spinner.succeed("Your Github token key is authenticated.")
-                config.write()
+                config.save_config()
             else:
                 spinner.fail("Your Github token key is not valid.")
                 sys.exit(1)
@@ -58,7 +58,7 @@ class Application:
             sys.exit(0)
 
     def upload(self):
-        """Upload current history"""
+        """Upload history and config file to Gist"""
         spinner = Spinner.NewTask("Uploading ...")
 
         # Exit process if not logged in
@@ -68,11 +68,11 @@ class Application:
 
         try:
             if config.parser["Auth"]["gist_id"]:
-                gist = config.gist.get_gist(config.parser["Auth"]["gist_id"])
+                gist = config.github.get_gist(config.parser["Auth"]["gist_id"])
 
                 # Set upload date
                 config.parser["Upload"]["last_date"] = str(int(time.time()))
-                config.write()
+                config.save_config()
 
                 files = self.__prepare_payload()
 
@@ -82,7 +82,7 @@ class Application:
             else:
                 description = "SyncShell Gist"
 
-                user = config.gist.get_user()
+                user = config.github.get_user()
                 files = self.__prepare_payload()
                 gist = user.create_gist(False, files, description)
 
@@ -90,7 +90,7 @@ class Application:
                 config.parser["Upload"]["last_date"] = str(int(time.time()))
                 config.parser["Auth"]["gist_id"] = gist.id
 
-                config.write()
+                config.save_config()
 
                 files = self.__prepare_payload()
                 gist.edit(files=files)
@@ -110,11 +110,11 @@ class Application:
                 )
 
                 config.parser["Auth"]["gist_id"] = ""
-                config.write()
+                config.save_config()
             sys.exit(1)
 
     def download(self):
-        """Download Gist and save it to history file"""
+        """Download history and config file from Gist"""
 
         try:
             token = str(input("Enter your Github token key: "))
@@ -123,14 +123,14 @@ class Application:
             spinner = Spinner.NewTask("Downloading ...")
 
             # Redefine Github instance with new token
-            config.gist = Github(token)
+            config.github = Github(token)
 
             # Exit process if not logged in
             if not config.is_logged_in():
                 sys.exit(1)
 
             # Download Gist object
-            gist = config.gist.get_gist(gist_id)
+            gist = config.github.get_gist(gist_id)
 
             if len(gist.files) != 2:
                 spinner.fail("Gist content corrupted, Please use another Gist.")
@@ -145,10 +145,9 @@ class Application:
                 spinner.fail("Unable to convert different shells")
                 sys.exit(1)
 
-            # Write configuration
             config.parser["Auth"]["token"] = token
             config.parser["Auth"]["gist_id"] = gist_id
-            config.write()
+            config.save_config()
 
             history_file = config.get_shell_history()
             history_content = history_file["content"]
