@@ -4,6 +4,11 @@
   <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"
     alt="MIT License" />
 </a>
+<!-- Build Status -->
+<a href="https://github.com/msudgh/syncshell/actions/workflows/tests.yaml">
+  <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=main"
+    alt="Build Status" />
+</a>
 <!-- Releases -->
 <a href="https://github.com/msudgh/syncshell/releases">
   <img src="https://img.shields.io/github/release/msudgh/syncshell.svg"
