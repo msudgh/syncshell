@@ -6,7 +6,7 @@
 </a>
 <!-- Build Status -->
 <a href="https://github.com/msudgh/syncshell/actions/workflows/tests.yaml">
-  <img src="https://github.com/msudgh/syncshell/actions/workflows/test.yaml/badge.svg?branch=main"
+  <img src="https://github.com/msudgh/syncshell/actions/workflows/tests.yaml/badge.svg?branch=main"
     alt="Build Status" />
 </a>
 <!-- Releases -->
