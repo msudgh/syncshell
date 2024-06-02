@@ -15,23 +15,26 @@ config = SyncShellConfig()
 config.read_config()
 
 
+def bundle_files_for_upload():
+    """Bundle history and config files for upload"""
+
+    files = {}
+    history_file = config.get_shell_history()
+    config_file = config.get_config()
+
+    files[history_file["path"]] = InputFileContent(history_file["content"])
+    files[config_file["path"]] = InputFileContent(config_file["content"])
+
+    return files
+
+
 class Application:
     """SyncShell CLI Application"""
 
-    def __prepare_payload(self):
-        """Prepare history and config file for upload"""
-
-        files = {}
-        history_file = config.get_shell_history()
-        config_file = config.get_config()
-
-        files[history_file["path"]] = InputFileContent(history_file["content"])
-        files[config_file["path"]] = InputFileContent(config_file["content"])
-
-        return files
-
     def auth(self):
         """Retrieve & authenticate user's token"""
+        print(constants.AUTH_MESSAGE)
+
         try:
             config.parser["Auth"]["token"] = str(input(constants.TOKEN_INPUT))
             config.github = Github(config.parser["Auth"]["token"])
@@ -40,10 +43,10 @@ class Application:
 
             # Write config file if Github user already authorized
             if config.is_logged_in():
-                spinner.succeed("Your Github token key is authenticated.")
+                spinner.succeed("Github token is authenticated.")
                 config.save_config()
             else:
-                spinner.fail("Your Github token key is not valid.")
+                spinner.fail("Github token is not valid.")
                 sys.exit(1)
         except KeyboardInterrupt:
             sys.exit(0)
@@ -54,28 +57,28 @@ class Application:
 
         # Exit process if not logged in
         if not config.is_logged_in():
-            spinner.fail("Your Github token key is not valid. Authenticate first.")
+            spinner.fail(
+                "Github token key is not valid. Use 'auth' command to authenticate."
+            )
             sys.exit(1)
 
         try:
-            if config.parser["Auth"]["gist_id"]:
-                gist = config.github.get_gist(config.parser["Auth"]["gist_id"])
+            gist_id = config.parser["Auth"]["gist_id"]
+            if gist_id:
+                gist = config.github.get_gist(gist_id)
 
                 # Set upload date
                 config.parser["Upload"]["last_date"] = str(int(time.time()))
                 config.save_config()
 
-                files = self.__prepare_payload()
-
-                gist.edit(files=files)
+                gist.edit(files=bundle_files_for_upload())
 
                 spinner.succeed(f"Gist ID ({gist.id}) updated.")
             else:
                 description = "SyncShell Gist"
 
                 user = config.github.get_user()
-                files = self.__prepare_payload()
-                gist = user.create_gist(False, files, description)
+                gist = user.create_gist(False, bundle_files_for_upload(), description)
 
                 # Set upload date
                 config.parser["Upload"]["last_date"] = str(int(time.time()))
@@ -83,8 +86,7 @@ class Application:
 
                 config.save_config()
 
-                files = self.__prepare_payload()
-                gist.edit(files=files)
+                gist.edit(files=bundle_files_for_upload())
                 spinner.succeed(f"New Gist ID ({gist.id}) created.")
         except FileNotFoundError:
             spinner.fail("Couldn't find history file.")
@@ -108,17 +110,16 @@ class Application:
         """Download history and config file from Gist"""
 
         try:
-            token = str(input("Enter your Github token key: "))
-            gist_id = str(input("Enter your Gist ID: "))
-
-            spinner = Spinner.NewTask("Downloading ...")
-
-            # Redefine Github instance with new token
+            print(constants.AUTH_MESSAGE)
+            token = str(input(constants.TOKEN_INPUT))
+            gist_id = str(input(constants.GIST_ID_INPUT))
             config.github = Github(token)
 
             # Exit process if not logged in
             if not config.is_logged_in():
                 sys.exit(1)
+
+            spinner = Spinner.NewTask("Downloading ...")
 
             # Download Gist object
             gist = config.github.get_gist(gist_id)

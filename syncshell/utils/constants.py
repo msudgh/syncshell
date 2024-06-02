@@ -30,4 +30,8 @@ SUPPORTED_SHELLS = {
 }
 SHELL = os.path.basename(os.environ.get("SHELL", "bash"))
 SHELL_HISTORY_PATH = os.path.join(USER_HOME, SUPPORTED_SHELLS[SHELL])
-TOKEN_INPUT = "Please enter your GitHub token (visit https://github.com/settings/tokens to generate one): "
+AUTH_MESSAGE = (
+    "Enter GitHub token (Visit https://github.com/settings/tokens to generate one)."
+)
+TOKEN_INPUT = "Token: "
+GIST_ID_INPUT = "Gist Id: "
