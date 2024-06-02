@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import textwrap
 import time
 from configparser import ConfigParser
 from subprocess import run, PIPE
@@ -34,15 +33,7 @@ class Application:
     def auth(self):
         """Retrieve & authenticate user's token"""
         try:
-            # Help message
-            getting_started = textwrap.fill(constants.HELP_MESSAGE, width=80)
-            print(getting_started)
-
-            # Prompt token key
-            prompt_token = input("Enter your Github token key: ")
-            config.parser["Auth"]["token"] = str(prompt_token)
-
-            # Set new token key
+            config.parser["Auth"]["token"] = str(input(constants.TOKEN_INPUT))
             config.github = Github(config.parser["Auth"]["token"])
 
             spinner = Spinner.NewTask("Check authentication...")
