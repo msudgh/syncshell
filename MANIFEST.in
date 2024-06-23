@@ -1,3 +1,7 @@
 include version.py
-include .syncshell.ini
 include README.md
+include LICENSE
+include pyproject.toml
+
+# Include the main configuration file
+include .syncshell.ini
