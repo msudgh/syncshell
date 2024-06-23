@@ -79,15 +79,22 @@ SyncShell is a tool that synchronizes shell history across all devices by secure
 
 ## Contributing
 
-I would love to have your help in making SyncShell idea better and expand it capabilities.
+Any interest of contribution is welcome. Feel free to send a PR, report a bug, or request a feature. Below are the guidelines to contribute to the project.
+
+### Development
+
+- Python 3.6+ is required.
+- Install [poetry](https://python-poetry.org/docs/#installation) as a dependency manager.
+- Install dependencies by running ```poetry shell && poetry install```
+- Run and debug your changes by running ```poetry run python syncshell```
 
 ### Branching
 
 - `main` is being used for the latest development version.
 - `release` is being used for the latest stable version.
 
-
 ### Pull Requests
+
 To contribute follow the below steps:
 
 1. Install [poetry](https://python-poetry.org/docs/#installation) as a dependency manager
@@ -98,4 +105,5 @@ To contribute follow the below steps:
 6. Submit a pull request
 
 ## License
+
 The code is licensed under the MIT License. Visit [LICENSE](https://github.com/msudgh/syncshell/blob/main/LICENSE) file for more information.
