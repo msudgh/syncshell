@@ -75,7 +75,7 @@ SyncShell is a tool that synchronizes shell history across all devices by secure
 
 **Security:** A Gist will be secret until it's not shared and will be secret and safe until you only have the Github Token and Gist ID.
 
-**Privacy:** In case of having password or secret in a history file, Its suggested to first have a alignment with privacy policies for any usecase.
+**Privacy:** In case of having password or secret in a history file, Its suggested to first have a alignment with privacy policies for any use case.
 
 ## Contributing
 
@@ -98,4 +98,4 @@ To contribute follow the below steps:
 6. Submit a pull request
 
 ## License
-The code is licensed under the MIT License. See the data's [LICENSE](https://github.com/msudgh/syncshell/blob/main/LICENSE) file for more information.
+The code is licensed under the MIT License. Visit [LICENSE](https://github.com/msudgh/syncshell/blob/main/LICENSE) file for more information.
