@@ -71,7 +71,7 @@ Usage:       syncshell
 
 ## How it Works
 
-SyncShell is a tool that synchronizes shell history across all devices by securely storing the history file on Github Gist. Github Gist provides two types of Gists, `public` and `secret`. When the `syncshell upload` command is executed, the shell history file is uploaded and stored securely on Github Gist as a secret Gist. To download the uploaded shell history on other devices, the `syncshell download` command is used. This command retrieves the previously uploaded Gist, allowing the user to access their shell history on any device.
+SyncShell syncs shell history across devices by storing it on Github Gist. It uploads the history as a secret Gist with `syncshell upload` and retrieves it with `syncshell download`.
 
 **Security:** A Gist will be secret until it's not shared and will be secret and safe until you only have the Github Token and Gist ID.
 
