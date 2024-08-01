@@ -4,6 +4,18 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 5
+      time: "09:00"
+      day: "sunday"
     reviewers:
       - "msudgh"
+    versioning-strategy: increase
+    allow:
+      - dependency-type: "production"
+    groups:
+      security-update-for-dependencies:
+        applies-to: "security-updates"
+        dependency-type: "production"
+      version-update-for-dependencies:
+        applies-to: "version-updates"
+        dependency-type: "production"
+    target-branch: "develop"
